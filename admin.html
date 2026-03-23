@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UstaTop - Admin Panel</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { background: #f8fafc; font-family: 'Montserrat', sans-serif; padding-top: 80px; }
+        .admin-nav { background: #fff; box-shadow: 0 2px 10px rgba(0,0,0,0.05); position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 15px 0; }
+        .nav-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; }
+        .nav-brand { font-size: 20px; font-weight: 700; color: #1e3a5f; text-decoration: none; }
+        
+        .tab-box { display: flex; gap: 20px; margin-bottom: 30px; }
+        .admin-tab { padding: 10px 20px; border-radius: 8px; background: #fff; cursor: pointer; font-weight: 600; transition: all 0.3s; border: 1px solid #e2e8f0; }
+        .admin-tab.active { background: #3b82f6; color: #fff; border-color: #3b82f6; }
+        
+        .data-card { background: #fff; border-radius: 12px; padding: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); margin-bottom: 20px; }
+        .table-wrap { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+        th { padding: 12px; border-bottom: 2px solid #f1f5f9; color: #64748b; font-size: 13px; text-transform: uppercase; }
+        td { padding: 15px 12px; border-bottom: 1px solid #f1f5f9; font-size: 14px; color: #1e3a5f; }
+        
+        .badge { padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; }
+        .badge-red { background: #fee2e2; color: #ef4444; }
+        .badge-green { background: #f0fdf4; color: #22c55e; }
+        
+        .btn-sm { padding: 8px 12px; border-radius: 6px; border: none; cursor: pointer; font-size: 12px; font-weight: 600; margin-right: 5px; }
+        .btn-block { background: #fff7ed; color: #ea580c; border: 1px solid #ffedd5; }
+        .btn-unblock { background: #f0fdf4; color: #16a34a; border: 1px solid #dcfce7; }
+        .btn-delete { background: #fef2f2; color: #dc2626; border: 1px solid #fee2e2; }
+        .btn-join { background: #eff6ff; color: #2563eb; border: 1px solid #dbeafe; }
+        
+        /* Modal for Chat */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 2000; justify-content: center; align-items: center; }
+        .modal-content { background: #fff; width: 95%; max-width: 650px; border-radius: 12px; display: flex; flex-direction: column; max-height: 90vh; }
+        .modal-header { padding: 15px 20px; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center; }
+        .modal-body { flex: 1; overflow-y: auto; padding: 20px; background: #f8fafc; display: flex; flex-direction: column; gap: 15px; }
+        .modal-footer { padding: 15px; border-top: 1px solid #f1f5f9; display: flex; gap: 10px; }
+        
+        .chat-bubble { padding: 12px 18px; border-radius: 15px; max-width: 85%; position: relative; font-size: 14px; line-height: 1.5; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+        .bubble-left { background: #fff; align-self: flex-start; border: 1px solid #e2e8f0; }
+        .bubble-right { background: #3b82f6; color: #fff; align-self: flex-end; }
+        .bubble-admin { background: #fee2e2; border: 1px solid #fecaca; color: #b91c1c; align-self: center; margin: 10px auto; text-align: center; width: 90%; }
+        
+        .bubble-time { font-size: 10px; color: #94a3b8; margin-top: 6px; display: block; }
+        .msg-del-btn { position: absolute; top: 8px; right: 8px; color: #cbd5e1; cursor: pointer; padding: 5px; opacity: 0.3; transition: all 0.2s; }
+        .bubble-admin .msg-del-btn { color: #f87171; }
+        .chat-bubble:hover .msg-del-btn { opacity: 1; }
+        .msg-del-btn:hover { color: #ef4444; }
+
+        #loading { text-align: center; padding: 50px; display: none; }
+    </style>
+    <script src="js/config.js"></script>
+</head>
+<body>
+    <nav class="admin-nav">
+        <div class="nav-container">
+            <a href="home.html" class="nav-brand"><i class="fas fa-shield-alt"></i> UstaTop Admin</a>
+            <a href="account.html" class="btn-sm" style="background: #f1f5f9; text-decoration: none;">Profilga qaytish</a>
+        </div>
+    </nav>
+
+    <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 20px;">
+        <div class="tab-box">
+            <div class="admin-tab active" onclick="switchTab('users')"><i class="fas fa-users"></i> Foydalanuvchilar</div>
+            <div class="admin-tab" onclick="switchTab('chats')"><i class="fas fa-comments"></i> Chatlar monitoringi</div>
+        </div>
+
+        <div id="loading"><i class="fas fa-spinner fa-spin fa-2x"></i></div>
+
+        <!-- Users Section -->
+        <div id="usersSection" class="data-card">
+            <h3>Barcha foydalanuvchilar</h3>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nomi</th>
+                            <th>Telefon</th>
+                            <th>Rol</th>
+                            <th>Holat</th>
+                            <th>Amallar</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersTable"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Chats Section -->
+        <div id="chatsSection" class="data-card" style="display:none;">
+            <h3>Chatlar monitoringi</h3>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Suhbatdoshlar</th>
+                            <th>So'nggi xabar</th>
+                            <th>Vaqti</th>
+                            <th>Amallar</th>
+                        </tr>
+                    </thead>
+                    <tbody id="chatsTable"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chat Modal -->
+    <div id="chatModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 id="modalTitle">Suhbat</h4>
+                <button onclick="closeModal()" style="background:none; border:none; font-size:20px; cursor:pointer;">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Messages will appear here -->
+            </div>
+            <div class="modal-footer">
+                <input type="text" id="adminWarning" placeholder="Ogohlantirish xabarini yozing..." style="flex:1; padding:10px; border-radius:6px; border:1px solid #e2e8f0;">
+                <button class="btn-sm" style="background:#dc2626; color:#fff;" onclick="sendWarning()">Yuborish</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = '${API_URL}/admin';
+        const token = localStorage.getItem('ustatop_token');
+        const user = JSON.parse(localStorage.getItem('ustatop_user') || '{}');
+
+        let allMessages = [];
+        let currentChatUsers = { u1: null, u2: null };
+
+        if (!token || user.role !== 'admin') {
+            window.location.href = 'home.html';
+        }
+
+        async function switchTab(tab) {
+            document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            if (tab === 'users') {
+                document.getElementById('usersSection').style.display = 'block';
+                document.getElementById('chatsSection').style.display = 'none';
+                fetchUsers();
+            } else {
+                document.getElementById('usersSection').style.display = 'none';
+                document.getElementById('chatsSection').style.display = 'block';
+                fetchChats();
+            }
+        }
+
+        async function fetchUsers() {
+            showLoading(true);
+            try {
+                const res = await fetch(`${API_URL}/users`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const users = await res.json();
+                const table = document.getElementById('usersTable');
+                table.innerHTML = users.map(u => `
+                    <tr>
+                        <td>${u.name}</td>
+                        <td>${u.phone}</td>
+                        <td>${u.role === 'worker' ? 'Usta' : 'Mijoz'}</td>
+                        <td>
+                            <span class="badge ${u.isBlocked ? 'badge-red' : 'badge-green'}">
+                                ${u.isBlocked ? 'Bloklangan' : 'Faol'}
+                            </span>
+                        </td>
+                        <td>
+                            <button class="btn-sm ${u.isBlocked ? 'btn-unblock' : 'btn-block'}" onclick="toggleBlock('${u._id}')">
+                                ${u.isBlocked ? 'Ochish' : 'Bloklash'}
+                            </button>
+                            <button class="btn-sm btn-delete" onclick="deleteUser('${u._id}')">O'chirish</button>
+                        </td>
+                    </tr>
+                `).join('');
+            } finally { showLoading(false); }
+        }
+
+        async function fetchChats() {
+            showLoading(true);
+            try {
+                const res = await fetch(`${API_URL}/chats`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                allMessages = await res.json();
+                
+                // Group by conversation
+                const conversations = {};
+                allMessages.forEach(m => {
+                    const u1Id = m.sender?._id || '000000000000000000000000';
+                    const u2Id = m.receiver?._id || '000000000000000000000000';
+                    
+                    if (u1Id === '000000000000000000000000' || u2Id === '000000000000000000000000') return;
+
+                    const IDs = [u1Id, u2Id].sort();
+                    const pair = IDs.join('_');
+                    
+                    if (!conversations[pair]) {
+                        conversations[pair] = {
+                            u1: m.sender,
+                            u2: m.receiver,
+                            lastMsg: m.content,
+                            time: m.createdAt,
+                            messages: []
+                        };
+                    }
+                });
+
+                const table = document.getElementById('chatsTable');
+                table.innerHTML = Object.values(conversations).map(c => `
+                    <tr>
+                        <td>${c.u1?.name} & ${c.u2?.name}</td>
+                        <td style="max-width:200px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${c.lastMsg}</td>
+                        <td>${new Date(c.time).toLocaleString()}</td>
+                        <td>
+                            <button class="btn-sm btn-join" onclick="openChat('${c.u1?._id}', '${c.u2?._id}')">Suhbatni ko'rish</button>
+                        </td>
+                    </tr>
+                `).join('');
+
+                // Update modal if open
+                if (document.getElementById('chatModal').style.display === 'flex') {
+                    renderMessages(currentChatUsers.u1, currentChatUsers.u2);
+                }
+            } finally { showLoading(false); }
+        }
+
+        function openChat(uid1, uid2) {
+            currentChatUsers = { u1: uid1, u2: uid2 };
+            renderMessages(uid1, uid2);
+            document.getElementById('chatModal').style.display = 'flex';
+        }
+
+        function renderMessages(uid1, uid2) {
+            const ADMIN_ID = '000000000000000000000000';
+            const conversationMessages = allMessages.filter(m => {
+                const sId = m.sender?._id || ADMIN_ID;
+                const rId = m.receiver?._id || ADMIN_ID;
+                
+                // Normal user-to-user
+                if ((sId === uid1 && rId === uid2) || (sId === uid2 && rId === uid1)) return true;
+                
+                // Admin intervention
+                if (sId === ADMIN_ID && (rId === uid1 || rId === uid2)) return true;
+                
+                return false;
+            }).reverse();
+
+            const modalBody = document.getElementById('modalBody');
+            modalBody.innerHTML = conversationMessages.map(m => {
+                const isAdmin = (m.sender?._id === ADMIN_ID) || m.isAdminMessage;
+                const isLeft = m.sender?._id === uid1;
+                return `
+                    <div class="chat-bubble ${isAdmin ? 'bubble-admin' : (isLeft ? 'bubble-left' : 'bubble-right')}">
+                        <i class="fas fa-trash msg-del-btn" title="O'chirish" onclick="deleteMessageInChat('${m._id}')"></i>
+                        ${isAdmin ? '<b>ADMIN OGOHLANTIRISHI:</b><br>' : `<b>${m.sender?.name || 'Foydalanuvchi'}:</b><br>`}
+                        ${m.content}
+                        <span class="bubble-time">${new Date(m.createdAt).toLocaleTimeString()}</span>
+                    </div>
+                `;
+            }).join('');
+            
+            setTimeout(() => { modalBody.scrollTop = modalBody.scrollHeight; }, 100);
+        }
+
+        async function sendWarning() {
+            const content = document.getElementById('adminWarning').value.trim();
+            const targetId = currentChatUsers.u1; // Send to one of them
+
+            if (!content || !targetId) return;
+
+            try {
+                const res = await fetch(`${API_URL}/chats/send`, {
+                    method: 'POST',
+                    headers: { 
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ receiverId: targetId, content })
+                });
+                if (res.ok) {
+                    document.getElementById('adminWarning').value = '';
+                    fetchChats(); 
+                }
+            } catch (e) { alert("Xato yuborishda"); }
+        }
+
+        async function deleteMessageInChat(msgId) {
+            if (!confirm("Ushbu xabarni butunlay o'chirmoqchimisiz?")) return;
+            try {
+                const res = await fetch(`${API_URL}/chats/${msgId}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (res.ok) fetchChats();
+            } catch (e) { alert("Xato o'chirishda"); }
+        }
+
+        function closeModal() {
+            document.getElementById('chatModal').style.display = 'none';
+        }
+
+        async function toggleBlock(id) {
+            if (!confirm("Amalni tasdiqlaysizmi?")) return;
+            const res = await fetch(`${API_URL}/users/${id}/block`, {
+                method: 'PUT',
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if (res.ok) fetchUsers();
+        }
+
+        async function deleteUser(id) {
+            if (!confirm("Foydalanuvchini butunlay o'chirmoqchimisiz?")) return;
+            const res = await fetch(`${API_URL}/users/${id}`, {
+                method: 'DELETE',
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if (res.ok) fetchUsers();
+        }
+
+        function showLoading(show) {
+            document.getElementById('loading').style.display = show ? 'block' : 'none';
+        }
+
+        fetchUsers();
+    </script>
+</body>
+</html>

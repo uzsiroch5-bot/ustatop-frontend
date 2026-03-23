@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UstaTop - Texnika ustalari</title>
+    <link rel="stylesheet" href="../style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="../js/config.js"></script>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-top">
+                <div class="menu-container">
+                    <!-- 3 line menu button -->
+                    <div class="menu-btn" id="menuBtn">
+                        <i class="fas fa-bars"></i>
+                    </div>
+
+                    <!-- Dropdown Menu -->
+                    <div class="dropdown-menu" id="dropdownMenu">
+                        <a href="../home.html" class="menu-item">
+                            Bosh sahifa
+                        </a>
+                        <div class="menu-item" id="hududlarBtn">
+                            Hududlar <i class="fas fa-chevron-right"></i>
+                        </div>
+                        <div class="menu-item" id="ustalarBtn">
+                            Ustalar <i class="fas fa-chevron-right"></i>
+                        </div>
+                        <a href="../yordam.html" class="menu-item">
+                            Yordam
+                        </a>
+                        <a href="../registratsiya.html" class="menu-item">
+                            Usta sifatida ro'yxatdan o'tish
+                        </a>
+                        <a href="../login.html" class="menu-item" id="loginMenuLink">
+                            <i class="fas fa-sign-in-alt"></i> Kirish
+                        </a>
+                    </div>
+
+                    <!-- Sub Menu overlay for regions -->
+                    <div class="sub-menu" id="subMenuHudud">
+                        <div class="sub-menu-header" id="backBtnHudud">
+                            <i class="fas fa-arrow-left"></i> Orqaga
+                        </div>
+                        <div class="sub-menu-list">
+                            <div class="list-item" onclick="location.href='../hududlar/andijon.html'">Andijon viloyati</div>
+                            <div class="list-item" onclick="location.href='../hududlar/buxoro.html'">Buxoro viloyati</div>
+                            <div class="list-item" onclick="location.href='../hududlar/fargona.html'">Farg'ona viloyati</div>
+                            <div class="list-item" onclick="location.href='../hududlar/jizzax.html'">Jizzax viloyati</div>
+                            <div class="list-item" onclick="location.href='../hududlar/xorazm.html'">Xorazm viloyati</div>
+                            <div class="list-item" onclick="location.href='../hududlar/namangan.html'">Namangan viloyati</div>
+                            <div class="list-item" onclick="location.href='../hududlar/navoiy.html'">Navoiy viloyati</div>
+                            <div class="list-item" onclick="location.href='../hududlar/qashqadaryo.html'">Qashqadaryo viloyati</div>
+                            <div class="list-item" onclick="location.href='../hududlar/samarqand.html'">Samarqand viloyati</div>
+                            <div class="list-item" onclick="location.href='../hududlar/sirdaryo.html'">Sirdaryo viloyati</div>
+                            <div class="list-item" onclick="location.href='../hududlar/surxondaryo.html'">Surxondaryo viloyati</div>
+                            <div class="list-item" onclick="location.href='../hududlar/toshkent.html'">Toshkent viloyati</div>
+                        </div>
+                    </div>
+
+                    <!-- Sub Menu overlay for categories -->
+                    <div class="sub-menu" id="subMenuUsta">
+                        <div class="sub-menu-header" id="backBtnUsta">
+                            <i class="fas fa-arrow-left"></i> Orqaga
+                        </div>
+                        <div class="sub-menu-list">
+                            <div class="list-item" onclick="location.href='santexnik.html'">Santexnik</div>
+                            <div class="list-item" onclick="location.href='elektrik.html'">Elektrik</div>
+                            <div class="list-item" onclick="location.href='quruvchi.html'">Quruvchi</div>
+                            <div class="list-item" onclick="location.href='remont.html'">Remont ustasi</div>
+                            <div class="list-item" onclick="location.href='mebel.html'">Mebel ustasi</div>
+                            <div class="list-item" onclick="location.href='texnika.html'">Texnika ustasi (telefon, kompyuter, TV va boshqalar)</div>
+                            <div class="list-item" onclick="location.href='avto.html'">Avto ustasi</div>
+                            <div class="list-item" onclick="location.href='konditsioner.html'">Konditsioner ustasi</div>
+                            <div class="list-item" onclick="location.href='payvandchi.html'">Payvandchi</div>
+                            <div class="list-item" onclick="location.href='dizayner.html'">Dizayner</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="logo">
+                    <img src="../logo.jpg" alt="Logo">
+                </div>
+                <div class="header-text">
+                    <h1>Mukammal xizmat uchun<br><span>eng yaxshi ustalarni tanlang</span></h1>
+                    <p>Sizga mos ustani topish endi yanada oson.</p>
+                </div>
+                <a href="../account.html" id="accountAvatar" style="display:none; width:42px; height:42px; border-radius:50%; background:linear-gradient(135deg,#3b82f6,#1d4ed8); color:#fff; font-size:18px; font-weight:700; font-family:Montserrat,sans-serif; align-items:center; justify-content:center; text-decoration:none; flex-shrink:0; box-shadow:0 3px 10px rgba(59,130,246,0.45); border:2px solid rgba(255,255,255,0.5); margin-left:auto;">?</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Ustalar List Section -->
+    <section class="ustalar-section">
+        <div class="container">
+            <h2 class="section-title">Texnika ustalari</h2>
+                        
+            
+            
+            <div class="ustalar-grid" id="ustalarGrid">
+                <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #64748b;">
+                    <i class="fas fa-spinner fa-spin fa-2x"></i>
+                    <p style="margin-top:10px;">Ustalar yuklanmoqda...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Usta Showcase Modal -->
+    <div class="modal-overlay" id="ustaModal">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <button class="modal-close" id="closeModal"><i class="fas fa-times"></i></button>
+            
+            <div class="modal-carousel" id="carouselContainer">
+                <div class="carousel-track" id="modalTrack">
+                    <!-- Images will be injected here -->
+                </div>
+                <button class="modal-nav modal-prev" id="prevSlide"><i class="fas fa-chevron-left"></i></button>
+                <button class="modal-nav modal-next" id="nextSlide"><i class="fas fa-chevron-right"></i></button>
+                <div class="carousel-indicators" id="modalIndicators">
+                    <!-- Dots will be injected here -->
+                </div>
+            </div>
+
+            <div class="modal-body">
+                <h3 class="modal-title" id="modalName">Ism Familiya</h3>
+                <div class="usta-rating" style="justify-content: center;" id="modalRatingContent">
+                    <!-- Rating injected here -->
+                </div>
+                <p class="modal-job" id="modalJob"><i class="fas fa-briefcase"></i> Kasb | <i class="fas fa-map-marker-alt"></i> Manzil</p>
+                
+                <div class="modal-actions">
+                    <button class="action-btn btn-phone" id="phoneBtn" onclick="revealPhone()">
+                        <i class="fas fa-phone-alt"></i> Telefon raqamni ko'rish
+                    </button>
+                    <a href="../chat system.html" class="action-btn btn-chat">
+                        <i class="fas fa-comment-dots"></i> Chat orqali yozish
+                    </a>
+                    <a href="#" class="action-btn btn-telegram" id="tgBtn" target="_blank">
+                        <i class="fab fa-telegram-plane"></i> Telegram orqali yozish
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+
+    
+    <script>
+        // Account Avatar Logic
+        (function() {
+            const user = JSON.parse(localStorage.getItem('ustatop_user') || 'null');
+            const avatar = document.getElementById('accountAvatar');
+            const loginLink = document.getElementById('loginMenuLink');
+            if (user && avatar) {
+                avatar.textContent = user.name.charAt(0).toUpperCase();
+                avatar.style.display = 'flex';
+                if (loginLink) loginLink.style.display = 'none';
+            }
+        })();
+
+        // Menu Logic
+        const menuBtn = document.getElementById('menuBtn');
+        const dropdownMenu = document.getElementById('dropdownMenu');
+        const hududlarBtn = document.getElementById('hududlarBtn');
+        const ustalarBtn = document.getElementById('ustalarBtn');
+        const subMenuHudud = document.getElementById('subMenuHudud');
+        const subMenuUsta = document.getElementById('subMenuUsta');
+        const backBtnHudud = document.getElementById('backBtnHudud');
+        const backBtnUsta = document.getElementById('backBtnUsta');
+
+        menuBtn.onclick = (e) => {
+            e.stopPropagation();
+            if (subMenuHudud.classList.contains('active') || subMenuUsta.classList.contains('active')) {
+                subMenuHudud.classList.remove('active');
+                subMenuUsta.classList.remove('active');
+            } else {
+                dropdownMenu.classList.toggle('active');
+            }
+        };
+        hududlarBtn.onclick = (e) => { e.stopPropagation(); dropdownMenu.classList.remove('active'); subMenuHudud.classList.add('active'); };
+        ustalarBtn.onclick = (e) => { e.stopPropagation(); dropdownMenu.classList.remove('active'); subMenuUsta.classList.add('active'); };
+        backBtnHudud.onclick = (e) => { e.stopPropagation(); subMenuHudud.classList.remove('active'); dropdownMenu.classList.add('active'); };
+        backBtnUsta.onclick = (e) => { e.stopPropagation(); subMenuUsta.classList.remove('active'); dropdownMenu.classList.add('active'); };
+        window.onclick = (e) => { if(!e.target.closest('.menu-container')) { dropdownMenu.classList.remove('active'); subMenuHudud.classList.remove('active'); subMenuUsta.classList.remove('active'); } };
+
+        // Modal Logic
+        const modal = document.getElementById('ustaModal');
+        const modalTrack = document.getElementById('modalTrack');
+        const modalIndicators = document.getElementById('modalIndicators');
+        let currentSlide = 0;
+        let totalSlides = 0;
+        let currentPhone = '';
+        let currentUstaId = '';
+
+        window.openModal = function(name, job, location, rating, reviews, phone, tgLink, images, ustaId) {
+            document.getElementById('modalName').textContent = name;
+            document.getElementById('modalJob').innerHTML = `<i class="fas fa-briefcase"></i> ${job} | <i class="fas fa-map-marker-alt"></i> ${location}`;
+            document.getElementById('modalRatingContent').innerHTML = `<i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-stroke"></i> <span>${rating} (${reviews})</span>`;
+            currentPhone = phone; currentUstaId = ustaId;
+            document.getElementById('phoneBtn').innerHTML = `<i class="fas fa-phone-alt"></i> Telefon raqamni ko'rish`;
+            document.getElementById('phoneBtn').classList.remove('reveal');
+            document.getElementById('tgBtn').href = "https://" + tgLink;
+            
+            // Fix Chat Link in Modal
+            const modalChatBtn = document.querySelector('.btn-chat');
+            if (modalChatBtn) modalChatBtn.href = `../chat system.html?userId=${ustaId}`;
+
+            modalTrack.innerHTML = ''; modalIndicators.innerHTML = ''; totalSlides = images.length; currentSlide = 0;
+            images.forEach((src, index) => {
+                const slide = document.createElement('div'); slide.className = 'carousel-slide';
+                const img = document.createElement('img'); img.src = src; slide.appendChild(img); modalTrack.appendChild(slide);
+                const dot = document.createElement('div'); dot.className = `indicator ${index === 0 ? 'active' : ''}`;
+                dot.onclick = () => goToSlide(index); modalIndicators.appendChild(dot);
+            });
+            updateCarouselPos(); modal.classList.add('active'); document.body.style.overflow = 'hidden';
+        };
+
+        window.revealPhone = function() {
+            const btn = document.getElementById('phoneBtn');
+            if(!btn.classList.contains('reveal')) {
+                btn.classList.add('reveal'); btn.innerHTML = `<i class="fas fa-phone-alt"></i> ${currentPhone}`; btn.href = `tel:${currentPhone}`;
+            }
+        };
+
+        document.getElementById('closeModal').onclick = () => { modal.classList.remove('active'); document.body.style.overflow = ''; };
+        function goToSlide(i) { currentSlide = i; updateCarouselPos(); }
+        function updateCarouselPos() { 
+            modalTrack.style.transform = `translateX(-${currentSlide * 100}%)`;
+            Array.from(modalIndicators.children).forEach((dot, idx) => dot.classList.toggle('active', idx === currentSlide));
+        }
+        document.getElementById('prevSlide').onclick = () => goToSlide((currentSlide - 1 + totalSlides) % totalSlides);
+        document.getElementById('nextSlide').onclick = () => goToSlide((currentSlide + 1) % totalSlides);
+
+        // Dynamic Load Workers
+        async function loadWorkers() {
+            const grid = document.getElementById('ustalarGrid');
+            try {
+                const response = await fetch('${API_URL}/users/workers?category=texnika');
+                const workers = await response.json();
+                if (workers.length === 0) {
+                    grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #64748b;">Hozircha shu yo\'nalishda usta topilmadi.</div>';
+                    return;
+                }
+                grid.innerHTML = '';
+                workers.forEach(w => {
+                    const portfolio = w.portfolio && w.portfolio.length > 0 
+                        ? w.portfolio.map(url => url.startsWith('http') ? url : `${BACKEND_URL}${url}`)
+                        : ['https://images.unsplash.com/photo-1540569014015-19a7be504e3a?auto=format&fit=crop&w=1000&q=80'];
+                    const card = document.createElement('div'); card.className = 'usta-card';
+                    card.onclick = () => openModal(w.name, w.category || 'Usta', w.location || 'Oʻzbekiston', '5.0', '0', w.phone, 't.me/ustatop', portfolio, w._id);
+                    card.innerHTML = `
+                        <div class="usta-img"><img src="${portfolio[0]}" alt="${w.name}"></div>
+                        <div class="usta-info">
+                            <h3>${w.name}</h3>
+                            <div class="usta-rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><span>5.0 (0)</span></div>
+                            <p class="usta-job"><i class="fas fa-briefcase"></i> ${w.category || 'Mutaxassis'}</p>
+                            <p class="usta-location"><i class="fas fa-map-marker-alt"></i> ${w.location || 'Oʻzbekiston'}</p>
+                            <a href="../chat system.html?userId=${w._id}" class="card-chat-btn" onclick="event.stopPropagation()"><i class="fas fa-comment-dots"></i></a>
+                        </div>`;
+                    grid.appendChild(card);
+                });
+            } catch (e) { grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #ef4444;">Yuklashda xatolik yuz berdi.</div>'; }
+        }
+        loadWorkers();
+    </script>
+        
+</html>
+

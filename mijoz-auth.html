@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UstaTop - Mijoz kirish</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="js/config.js"></script>
+    <style>
+        body { background: #f0f4ff; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
+        .auth-page { width: 100%; max-width: 420px; }
+        .auth-logo { text-align: center; margin-bottom: 24px; }
+        .auth-logo img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; }
+        .auth-logo h1 { font-size: 22px; font-weight: 700; color: #1e3a5f; margin-top: 8px; }
+        .auth-card { background: #fff; border-radius: 20px; padding: 30px; box-shadow: 0 8px 30px rgba(0,0,0,0.08); }
+        /* Tabs */
+        .auth-tabs { display: flex; background: #f1f5f9; border-radius: 12px; padding: 4px; margin-bottom: 28px; }
+        .tab-btn { flex: 1; padding: 10px; border: none; background: transparent; border-radius: 10px; font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 600; color: #94a3b8; cursor: pointer; transition: all 0.2s; }
+        .tab-btn.active { background: #fff; color: #3b82f6; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        /* Form */
+        .auth-form { display: none; }
+        .auth-form.active { display: block; }
+        .form-label { font-size: 13px; font-weight: 600; color: #1e3a5f; margin-bottom: 6px; display: block; }
+        .phone-input-wrap { display: flex; align-items: center; border: 2px solid #e2e8f0; border-radius: 12px; overflow: hidden; transition: border-color 0.2s; }
+        .phone-input-wrap:focus-within { border-color: #3b82f6; }
+        .phone-prefix { padding: 14px 12px 14px 16px; font-size: 15px; font-weight: 600; color: #1e3a5f; background: #f8fafc; border-right: 1px solid #e2e8f0; white-space: nowrap; }
+        .phone-input-wrap input { flex: 1; border: none; outline: none; padding: 14px 16px; font-family: 'Montserrat', sans-serif; font-size: 15px; color: #1e3a5f; background: transparent; }
+        .input-field { width: 100%; border: 2px solid #e2e8f0; border-radius: 12px; padding: 14px 16px; font-family: 'Montserrat', sans-serif; font-size: 15px; color: #1e3a5f; outline: none; transition: border-color 0.2s; box-sizing: border-box; margin-top: 0; }
+        .input-field:focus { border-color: #3b82f6; }
+        .form-group { margin-bottom: 18px; }
+        .submit-btn { width: 100%; padding: 15px; background: linear-gradient(135deg, #3b82f6, #2563eb); color: #fff; border: none; border-radius: 12px; font-family: 'Montserrat', sans-serif; font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.25s; margin-top: 4px; }
+        .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(59,130,246,0.35); }
+        .divider { text-align: center; color: #cbd5e1; font-size: 13px; margin: 16px 0; }
+        .note { text-align: center; font-size: 12px; color: #94a3b8; margin-top: 14px; }
+        .back-link { display: block; text-align: center; margin-top: 20px; color: #94a3b8; font-size: 13px; text-decoration: none; }
+        .back-link:hover { color: #3b82f6; }
+        /* OTP step */
+        #otpStep { display: none; }
+        .otp-inputs { display: flex; gap: 10px; justify-content: center; margin: 20px 0; }
+        .otp-input { width: 52px; height: 56px; border: 2px solid #e2e8f0; border-radius: 12px; text-align: center; font-size: 22px; font-weight: 700; font-family: 'Montserrat', sans-serif; color: #1e3a5f; outline: none; transition: border-color 0.2s; }
+        .otp-input:focus { border-color: #3b82f6; }
+        .resend-link { text-align: center; color: #3b82f6; font-size: 13px; cursor: pointer; margin-top: 8px; }
+    </style>
+</head>
+<body>
+    <div class="auth-page">
+        <div class="auth-logo">
+            <img src="logo.jpg" alt="UstaTop">
+            <h1>Mijoz kirishi</h1>
+        </div>
+
+        <div class="auth-card">
+            <div class="auth-tabs">
+                <button class="tab-btn active" onclick="switchTab('login')">Kirish</button>
+                <button class="tab-btn" onclick="switchTab('register')">Ro'yxatdan o'tish</button>
+            </div>
+
+            <!-- LOGIN FORM -->
+            <div class="auth-form active" id="loginForm">
+                <div id="loginPhoneStep">
+                    <div class="form-group">
+                        <label class="form-label">Telefon raqam</label>
+                        <div class="phone-input-wrap">
+                            <span class="phone-prefix">🇺🇿 +998</span>
+                            <input type="tel" id="loginPhone" placeholder="90 123 45 67" maxlength="12">
+                        </div>
+                    </div>
+                    <!-- HIDDEN ADMIN PASSWORD FIELD -->
+                    <div class="form-group" id="adminPassGroup" style="display:none;">
+                        <label class="form-label">Admin kodi</label>
+                        <input type="password" class="input-field" id="adminPassword" placeholder="Maxfiy kodni kiriting">
+                    </div>
+                    <button class="submit-btn" id="loginContinueBtn" onclick="handleLoginFlow()">
+                        <i class="fas fa-arrow-right"></i> Davom etish
+                    </button>
+                    <p class="note">SMS orqali tasdiqlash kodi yuboriladi</p>
+                </div>
+
+                <div id="loginOtpStep" style="display:none;">
+                    <p style="text-align:center; font-size:14px; color:#64748b; margin-bottom:4px;">SMS kodi yuborildi:</p>
+                    <p style="text-align:center; font-weight:700; color:#1e3a5f; font-size:16px;" id="loginPhoneDisplay"></p>
+                    <div class="otp-inputs">
+                        <input class="otp-input" type="number" maxlength="1" oninput="moveOtp(this,0,'login')">
+                        <input class="otp-input" type="number" maxlength="1" oninput="moveOtp(this,1,'login')">
+                        <input class="otp-input" type="number" maxlength="1" oninput="moveOtp(this,2,'login')">
+                        <input class="otp-input" type="number" maxlength="1" oninput="moveOtp(this,3,'login')">
+                    </div>
+                    <button class="submit-btn" onclick="verifyOTP('login')"><i class="fas fa-check"></i> Tasdiqlash</button>
+                    <p class="resend-link" onclick="resendOTP('login')">Kodni qayta yuborish</p>
+                </div>
+            </div>
+
+            <!-- REGISTER FORM -->
+            <div class="auth-form" id="registerForm">
+                <div id="registerPhoneStep">
+                    <div class="form-group">
+                        <label class="form-label">Ism</label>
+                        <input type="text" class="input-field" id="regName" placeholder="Ismingizni kiriting">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Telefon raqam</label>
+                        <div class="phone-input-wrap">
+                            <span class="phone-prefix">🇺🇿 +998</span>
+                            <input type="tel" id="regPhone" placeholder="90 123 45 67" maxlength="12">
+                        </div>
+                    </div>
+                    <button class="submit-btn" onclick="sendOTP('register')">
+                        <i class="fas fa-sms"></i> SMS kod yuborish
+                    </button>
+                    <p class="note">Bepul ro'yxatdan o'tish</p>
+                </div>
+
+                <div id="registerOtpStep" style="display:none;">
+                    <p style="text-align:center; font-size:14px; color:#64748b; margin-bottom:4px;">SMS kodi yuborildi:</p>
+                    <p style="text-align:center; font-weight:700; color:#1e3a5f; font-size:16px;" id="regPhoneDisplay"></p>
+                    <div class="otp-inputs">
+                        <input class="otp-input" type="number" maxlength="1" oninput="moveOtp(this,0,'register')">
+                        <input class="otp-input" type="number" maxlength="1" oninput="moveOtp(this,1,'register')">
+                        <input class="otp-input" type="number" maxlength="1" oninput="moveOtp(this,2,'register')">
+                        <input class="otp-input" type="number" maxlength="1" oninput="moveOtp(this,3,'register')">
+                    </div>
+                    <button class="submit-btn" onclick="verifyOTP('register')"><i class="fas fa-check"></i> Tasdiqlash</button>
+                    <p class="resend-link" onclick="resendOTP('register')">Kodni qayta yuborish</p>
+                </div>
+            </div>
+        </div>
+
+        <a href="login.html" class="back-link"><i class="fas fa-arrow-left"></i> Orqaga</a>
+    </div>
+
+    <script>
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-btn').forEach((b,i) => b.classList.toggle('active', (tab==='login'&&i===0)||(tab==='register'&&i===1)));
+            document.getElementById('loginForm').classList.toggle('active', tab === 'login');
+            document.getElementById('registerForm').classList.toggle('active', tab === 'register');
+        }
+
+        // Safety function to avoid 'next is not a function' error
+        window.next = function() { console.log('Safety next() called'); };
+        function next() { console.log('Safety next() called'); }
+
+        const AUTH_API_URL = `${API_URL}/auth`;
+
+        async function handleLoginFlow() {
+            const phoneValue = document.getElementById('loginPhone').value.trim();
+            const phone = '+998' + phoneValue.replace(/\D/g, '');
+            
+            // --- SECRET ADMIN CHECK ---
+            if (phone === '+998885020086') {
+                const passField = document.getElementById('adminPassGroup');
+                const adminPass = document.getElementById('adminPassword').value.trim();
+                
+                if (passField.style.display === 'none') {
+                    passField.style.display = 'block';
+                    document.getElementById('loginContinueBtn').innerHTML = '<i class="fas fa-sign-in-alt"></i> Admin sifatida kirish';
+                    return;
+                }
+                
+                if (!adminPass) {
+                    alert("Admin kodini kiriting!");
+                    return;
+                }
+
+                // Call the hidden admin login directly
+                try {
+                    const response = await fetch(`${AUTH_API_URL}/login`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ phone, password: adminPass })
+                    });
+                    const data = await response.json();
+                    if (response.ok) {
+                        localStorage.setItem('ustatop_token', data.token);
+                        localStorage.setItem('ustatop_user', JSON.stringify(data.user));
+                        window.location.href = 'home.html';
+                    } else {
+                        alert(data.message || "Xato kod!");
+                    }
+                } catch (e) {
+                    alert("Server xatosi");
+                }
+                return;
+            }
+
+            // Normal flow
+            sendOTP('login');
+        }
+
+        async function sendOTP(type) {
+            const phoneInput = type === 'login' ? 'loginPhone' : 'regPhone';
+            const phoneValue = document.getElementById(phoneInput).value.trim();
+            const phone = '+998' + phoneValue.replace(/\D/g, '');
+
+            if (phoneValue.length < 9) { 
+                alert("To'g'ri telefon raqam kiriting!"); 
+                return; 
+            }
+
+            if (type === 'register' && !document.getElementById('regName').value.trim()) {
+                alert("Ismingizni kiriting!");
+                return;
+            }
+
+            try {
+                const response = await fetch(`${AUTH_API_URL}/send-otp`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ phone })
+                });
+
+                const data = await response.json();
+                console.log('OTP response:', data);
+                if (response.ok) {
+                    if (type === 'login') {
+                        document.getElementById('loginPhoneDisplay').textContent = '+998 ' + phoneValue;
+                        document.getElementById('loginPhoneStep').style.display = 'none';
+                        document.getElementById('loginOtpStep').style.display = 'block';
+                    } else {
+                        document.getElementById('regPhoneDisplay').textContent = '+998 ' + phoneValue;
+                        document.getElementById('registerPhoneStep').style.display = 'none';
+                        document.getElementById('registerOtpStep').style.display = 'block';
+                    }
+                    if (data.otp) {
+                        alert("Sizning kodingiz: " + data.otp);
+                        console.log("OTP received (dev mode):", data.otp);
+                    }
+                } else {
+                    console.error('OTP error:', data.message);
+                    alert(data.message || "Xatolik yuz berdi");
+                }
+            } catch (error) {
+                console.error("Auth fetch error:", error);
+                alert("Serverga ulanishda xatolik");
+            }
+        }
+
+        function moveOtp(input, index, type) {
+            const val = input.value;
+            if (val.length > 1) input.value = val[val.length - 1];
+            const container = type === 'login'
+                ? document.getElementById('loginOtpStep')
+                : document.getElementById('registerOtpStep');
+            const inputs = container.querySelectorAll('.otp-input');
+            if (val && index < 3) inputs[index + 1].focus();
+        }
+
+        async function verifyOTP(type) {
+            const container = type === 'login'
+                ? document.getElementById('loginOtpStep')
+                : document.getElementById('registerOtpStep');
+            const inputs = container.querySelectorAll('.otp-input');
+            const otp = Array.from(inputs).map(i => i.value).join('');
+            
+            if (otp.length < 4) { alert("4 xonali kodni kiriting!"); return; }
+
+            const phoneValue = type === 'login' 
+                ? document.getElementById('loginPhone').value.trim()
+                : document.getElementById('regPhone').value.trim();
+            const phone = '+998' + phoneValue.replace(/\D/g, '');
+            
+            const body = { phone, otp };
+            if (type === 'register') {
+                body.name = document.getElementById('regName').value.trim();
+                body.role = 'client';
+            }
+
+            try {
+                const response = await fetch(`${AUTH_API_URL}/verify-otp`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(body)
+                });
+
+                const data = await response.json();
+                console.log('Verify OTP response:', data);
+                if (response.ok) {
+                    localStorage.setItem('ustatop_token', data.token);
+                    localStorage.setItem('ustatop_user', JSON.stringify({
+                        _id: data._id,
+                        name: data.name,
+                        phone: data.phone,
+                        role: data.role
+                    }));
+                    console.log('Verification successful, redirecting...');
+                    window.location.href = 'home.html';
+                } else {
+                    console.error('Verify error:', data.message);
+                    alert(data.message || "Kod noto'g'ri");
+                }
+            } catch (error) {
+                console.error("Verify fetch error:", error);
+                alert("Tasdiqlashda xatolik");
+            }
+        }
+
+        function resendOTP(type) {
+            sendOTP(type);
+        }
+    </script>
+</body>
+</html>

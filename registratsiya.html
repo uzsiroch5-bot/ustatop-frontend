@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UstaTop - Usta Ro'yxatdan O'tishi</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="js/config.js"></script>
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #f97316, #ea580c);
+            --secondary-bg: #f8fafc;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --white: #ffffff;
+            --border: #e2e8f0;
+            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+        }
+
+        body {
+            background: #f1f5f9;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .auth-container {
+            width: 100%;
+            max-width: 550px;
+            background: var(--white);
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .auth-header {
+            padding: 40px 40px 20px;
+            text-align: center;
+        }
+
+        .auth-logo {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(249, 115, 22, 0.2);
+        }
+
+        .auth-header h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 8px;
+        }
+
+        .auth-header p {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        /* Toggle Switch */
+        .auth-toggle {
+            display: flex;
+            margin: 20px 40px;
+            background: #f1f5f9;
+            padding: 6px;
+            border-radius: 14px;
+            position: relative;
+        }
+
+        .toggle-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            background: transparent;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--text-muted);
+            cursor: pointer;
+            z-index: 1;
+            transition: color 0.3s;
+        }
+
+        .toggle-btn.active {
+            color: var(--white);
+        }
+
+        .toggle-slider {
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            width: calc(50% - 6px);
+            height: calc(100% - 12px);
+            background: var(--primary-gradient);
+            border-radius: 10px;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
+        }
+
+        .auth-container.login-mode .toggle-slider {
+            transform: translateX(100%);
+        }
+
+        /* Form Content */
+        .auth-body {
+            padding: 20px 40px 40px;
+        }
+
+        .auth-form {
+            display: none;
+        }
+
+        .auth-form.active {
+            display: block;
+            animation: slideIn 0.4s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 8px;
+            margin-left: 4px;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-wrapper i.eye-icon {
+            position: absolute;
+            right: 16px;
+            left: auto;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+            font-size: 16px;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .input-wrapper i.eye-icon:hover {
+            color: #f97316;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 14px 16px 14px 16px; /* Reset padding since icons are removed */
+            border: 1.5px solid var(--border);
+            border-radius: 12px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 15px;
+            color: var(--text-main);
+            transition: all 0.3s;
+            background: var(--white);
+        }
+
+        .form-control.with-eye {
+            padding-right: 46px;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #f97316;
+            box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.1);
+        }
+
+        select.form-control {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2394a3b8'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            background-size: 18px;
+        }
+
+        /* Portfolio Upload */
+        .portfolio-upload {
+            border: 2px dashed var(--border);
+            border-radius: 12px;
+            padding: 30px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: #f8fafc;
+        }
+
+        .portfolio-upload:hover {
+            border-color: #f97316;
+            background: #fff7ed;
+        }
+
+        .portfolio-upload i {
+            font-size: 32px;
+            color: #f97316;
+            margin-bottom: 12px;
+        }
+
+        .portfolio-upload p {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .portfolio-upload span {
+            display: block;
+            font-size: 11px;
+            margin-top: 5px;
+            color: #ef4444;
+        }
+
+        .image-preview-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .preview-item {
+            aspect-ratio: 1;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .preview-item .remove-img {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            width: 20px;
+            height: 20px;
+            background: rgba(0,0,0,0.5);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            background: var(--primary-gradient);
+            color: var(--white);
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(249, 115, 22, 0.3);
+            transition: all 0.3s;
+            margin-top: 20px;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(249, 115, 22, 0.45);
+        }
+
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+
+        /* OTP Modal */
+        .otp-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(5px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .otp-card {
+            background: white;
+            padding: 40px;
+            border-radius: 24px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .otp-inputs {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin: 25px 0;
+        }
+
+        .otp-input {
+            width: 50px;
+            height: 60px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-main);
+            transition: all 0.3s;
+        }
+
+        .otp-input:focus {
+            outline: none;
+            border-color: #f97316;
+            box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.1);
+        }
+
+        .resend-link {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-top: 15px;
+            display: block;
+            text-decoration: none;
+        }
+
+        .resend-link b { color: #f97316; cursor: pointer; }
+
+        .back-home {
+            display: block;
+            text-align: center;
+            margin-top: 25px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 13px;
+            transition: color 0.3s;
+        }
+
+        .back-home:hover {
+            color: #f97316;
+        }
+
+        /* Mobile specific adjustments */
+        @media (max-width: 480px) {
+            .auth-header, .auth-body {
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+            .auth-toggle {
+                margin-left: 20px;
+                margin-right: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="auth-container" id="container">
+        <div class="auth-header">
+            <img src="logo.jpg" alt="Logo" class="auth-logo">
+            <h1 id="mainTitle">Usta Ro'yxatdan O'tishi</h1>
+            <p id="subTitle">Hali platformamizda yo'qmisiz? Hoziroq ro'yxatdan o'ting!</p>
+        </div>
+
+        <div class="auth-toggle">
+            <div class="toggle-slider" id="slider"></div>
+            <button class="toggle-btn active" id="registerTab">Ro'yxatdan o'tish</button>
+            <button class="toggle-btn" id="loginTab">Kirish</button>
+        </div>
+
+        <div class="auth-body">
+            <!-- Registration Form -->
+            <form id="registerForm" class="auth-form active" onsubmit="handleAuth(event, 'register')">
+                <div class="form-group">
+                    <label>To'liq ism (Ism va Familiya)</label>
+                    <div class="input-wrapper">
+                        <input type="text" class="form-control" placeholder="Masalan: Azizov Jasur" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Telefon raqamingiz</label>
+                    <div class="input-wrapper">
+                        <input type="tel" id="regPhone" class="form-control" placeholder="+998 90 123 45 67" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Parol yaratish</label>
+                    <div class="input-wrapper">
+                        <input type="password" id="regPass" class="form-control with-eye" placeholder="••••••••" required>
+                        <i class="fas fa-eye eye-icon" onclick="togglePass('regPass', this)"></i>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Mutaxassislik</label>
+                    <div class="input-wrapper">
+                        <select class="form-control" id="specializationSelect" required onchange="toggleCustomOccupation(this.value)">
+                            <option value="" disabled selected>Kasbingizni tanlang</option>
+                            <option value="santexnik">Santexnik</option>
+                            <option value="elektrik">Elektrik</option>
+                            <option value="quruvchi">Quruvchi</option>
+                            <option value="remont">Remont ustasi</option>
+                            <option value="mebel">Mebel ustasi</option>
+                            <option value="texnika">Texnika ustasi</option>
+                            <option value="avto">Avto ustasi</option>
+                            <option value="konditsioner">Konditsioner ustasi</option>
+                            <option value="payvandchi">Payvandchi</option>
+                            <option value="dizayner">Dizayner</option>
+                            <option value="other">Boshqa...</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group" id="customOccupationGroup" style="display: none; animation: slideIn 0.3s ease-out;">
+                    <label>Mutaxassislikni yozing</label>
+                    <div class="input-wrapper">
+                        <input type="text" class="form-control" placeholder="Masalan: Duradgor" id="customOccupationInput">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Viloyat</label>
+                    <div class="input-wrapper">
+                        <select class="form-control" required>
+                            <option value="" disabled selected>Viloyatingizni tanlang</option>
+                            <option value="toshkent">Toshkent viloyati</option>
+                            <option value="andijon">Andijon viloyati</option>
+                            <option value="buxoro">Buxoro viloyati</option>
+                            <option value="fargona">Farg'ona viloyati</option>
+                            <option value="jizzax">Jizzax viloyati</option>
+                            <option value="xorazm">Xorazm viloyati</option>
+                            <option value="namangan">Namangan viloyati</option>
+                            <option value="navoiy">Navoiy viloyati</option>
+                            <option value="qashqadaryo">Qashqadaryo viloyati</option>
+                            <option value="samarqand">Samarqand viloyati</option>
+                            <option value="sirdaryo">Sirdaryo viloyati</option>
+                            <option value="surxondaryo">Surxondaryo viloyati</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Ish namunalaridan rasmlar</label>
+                    <div class="portfolio-upload" id="dropZone" onclick="document.getElementById('fileInput').click()">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Rasmlarni bu yerga yuklang yoki bosing</p>
+                        <span>Kamida 3 ta rasm yuklash shart</span>
+                        <input type="file" id="fileInput" hidden multiple accept="image/*" onchange="handleFiles(this.files)">
+                    </div>
+                    <div class="image-preview-grid" id="previewGrid"></div>
+                </div>
+
+                <button type="submit" class="btn-submit">Ro'yxatdan o'tish</button>
+            </form>
+
+            <!-- Login Form -->
+            <form id="loginForm" class="auth-form" onsubmit="handleAuth(event, 'login')">
+                <div class="form-group">
+                    <label>Foydalanuvchi ismi yoki Tel</label>
+                    <div class="input-wrapper">
+                        <input type="text" class="form-control" placeholder="Ismingiz yoki tel" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Parol</label>
+                    <div class="input-wrapper">
+                        <input type="password" id="loginPass" class="form-control with-eye" placeholder="••••••••" required>
+                        <i class="fas fa-eye eye-icon" onclick="togglePass('loginPass', this)"></i>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-submit">Kirish</button>
+            </form>
+
+            <a href="home.html" class="back-home"><i class="fas fa-arrow-left"></i> Bosh sahibaga qaytish</a>
+        </div>
+    </div>
+
+    <!-- OTP Modal Overlay -->
+    <div class="otp-overlay" id="otpModal">
+        <div class="otp-card">
+            <i class="fas fa-envelope-open-text" style="font-size: 48px; color: #f97316; margin-bottom: 20px;"></i>
+            <h3>Tasdiqlash kodi</h3>
+            <p style="font-size: 14px; color: #64748b; margin-top: 10px;">
+                Kod <span id="displayPhone">+998 90 *** ** 67</span> raqamiga yuborildi
+            </p>
+            
+            <div class="otp-inputs">
+                <input type="text" maxlength="1" class="otp-input" onkeyup="moveNext(this, 'otp2')">
+                <input type="text" maxlength="1" class="otp-input" id="otp2" onkeyup="moveNext(this, 'otp3')">
+                <input type="text" maxlength="1" class="otp-input" id="otp3" onkeyup="moveNext(this, 'otp4')">
+                <input type="text" maxlength="1" class="otp-input" id="otp4">
+            </div>
+
+            <button class="btn-submit" onclick="verifyOTP()">Tasdiqlash</button>
+            <a href="#" class="resend-link">Kod kelmadimi? <b onclick="alert('Kod qayta yuborildi!')">Qayta yuborish</b></a>
+        </div>
+    </div>
+
+    <script>
+        const container = document.getElementById('container');
+        const registerTab = document.getElementById('registerTab');
+        const loginTab = document.getElementById('loginTab');
+        const registerForm = document.getElementById('registerForm');
+        const loginForm = document.getElementById('loginForm');
+        const slider = document.getElementById('slider');
+        const mainTitle = document.getElementById('mainTitle');
+        const subTitle = document.getElementById('subTitle');
+        const customOccupationGroup = document.getElementById('customOccupationGroup');
+        const customOccupationInput = document.getElementById('customOccupationInput');
+
+        // Move to next OTP input
+        function moveNext(current, nextId) {
+            if (current.value.length >= 1) {
+                document.getElementById(nextId).focus();
+            }
+        }
+
+        // Safety alias for next
+        function next() {
+            console.log('Next called');
+            // If this is called by a multi-step button, handle it here
+        }
+
+        function toggleCustomOccupation(val) {
+            const group = document.getElementById('customOccupationGroup');
+            if (val === 'other') {
+                group.style.display = 'block';
+                document.getElementById('customOccupationInput').required = true;
+            } else {
+                group.style.display = 'none';
+                document.getElementById('customOccupationInput').required = false;
+            }
+        }
+
+        const AUTH_API_URL = `${API_URL}/auth`;
+
+        // Toggle Password Visibility
+        function togglePass(inputId, icon) {
+            const input = document.getElementById(inputId);
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.replace('fa-eye-slash', 'fa-eye');
+            }
+        }
+
+        let uploadedImages = [];
+
+        // Tab Switching
+        loginTab.onclick = () => {
+            container.classList.add('login-mode');
+            loginTab.classList.add('active');
+            registerTab.classList.remove('active');
+            loginForm.classList.add('active');
+            registerForm.classList.remove('active');
+            mainTitle.textContent = "Xush kelibsiz!";
+            subTitle.textContent = "Hisobingizga kiring va ishlanamalarni boshqaring";
+        };
+
+        registerTab.onclick = () => {
+            container.classList.remove('login-mode');
+            registerTab.classList.add('active');
+            loginTab.classList.remove('active');
+            registerForm.classList.add('active');
+            loginForm.classList.remove('active');
+            mainTitle.textContent = "Usta Ro'yxatdan O'tishi";
+            subTitle.textContent = "Hali platformamizda yo'qmisiz? Hoziroq ro'yxatdan o'ting!";
+        };
+
+        // File Handling
+        function handleFiles(files) {
+            const previewGrid = document.getElementById('previewGrid');
+            for (let file of files) {
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const previewItem = document.createElement('div');
+                        previewItem.className = 'preview-item';
+                        previewItem.innerHTML = `
+                            <img src="${e.target.result}" alt="Preview">
+                            <button type="button" class="remove-img" onclick="removeImage(this, '${file.name}')">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        `;
+                        previewGrid.appendChild(previewItem);
+                        uploadedImages.push(file);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
+        }
+
+        function removeImage(btn, fileName) {
+            btn.parentElement.remove();
+            uploadedImages = uploadedImages.filter(f => f.name !== fileName);
+        }
+
+        // Auth Logic
+        async function handleAuth(e, type) {
+            e.preventDefault();
+            
+            const phoneInput = type === 'register' ? document.getElementById('regPhone') : loginForm.querySelector('input[type="text"]');
+            let phoneValue = phoneInput.value.trim();
+            const phone = '+998' + phoneValue.replace(/\D/g, '').slice(-9);
+
+            if (type === 'register') {
+                if (uploadedImages.length < 3) {
+                    alert("Iltimos, kamida 3 ta rasm yuklang!");
+                    return;
+                }
+                
+                try {
+                    const response = await fetch(`${API_URL}/send-otp`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ phone })
+                    });
+                    const data = await response.json();
+                    console.log('OTP response:', data);
+                    if (response.ok) {
+                        console.log('OTP sent successfully to', phone);
+                        document.getElementById('displayPhone').textContent = phone;
+                        document.getElementById('otpModal').style.display = 'flex';
+                        if (data.otp) alert("Kodingiz: " + data.otp);
+                    } else {
+                        console.error('OTP error:', data.message);
+                        alert(data.message || "Xatolik");
+                    }
+                } catch (error) {
+                    console.error('Fetch error:', error);
+                    alert("Serverga ulanishda xatolik");
+                }
+            } else {
+                // For login, we'll also use OTP now as requested "hamma narsa OTP bilan"
+                try {
+                    const response = await fetch(`${API_URL}/send-otp`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ phone })
+                    });
+                    const data = await response.json();
+                    if (response.ok) {
+                        document.getElementById('displayPhone').textContent = phone;
+                        document.getElementById('otpModal').style.display = 'flex';
+                        if (data.otp) alert("Kodingiz: " + data.otp);
+                        // Save login mode to handle verifyOTP correctly
+                        localStorage.setItem('temp_auth_mode', 'login');
+                    } else {
+                        alert(data.message || "Xatolik");
+                    }
+                } catch (error) {
+                    alert("Serverga ulanishda xatolik");
+                }
+            }
+        }
+
+        async function verifyOTP() {
+            const inputs = document.querySelectorAll('.otp-input');
+            const otp = Array.from(inputs).map(i => i.value).join('');
+            if (otp.length < 4) { alert("4 xonali kod"); return; }
+
+            const mode = localStorage.getItem('temp_auth_mode') || 'register';
+            const phoneDisplay = document.getElementById('displayPhone').textContent;
+            const phone = '+998' + phoneDisplay.replace(/\D/g, '').slice(-9);
+
+            const body = { phone, otp };
+            
+            if (mode === 'register') {
+                body.name = document.getElementById('registerForm').querySelectorAll('input')[0].value;
+                body.role = 'worker';
+                body.category = document.getElementById('specializationSelect').value;
+                body.location = document.getElementById('registerForm').querySelectorAll('select')[1].value;
+                
+                // Upload images to server
+                if (uploadedImages.length > 0) {
+                    const formData = new FormData();
+                    uploadedImages.forEach(file => formData.append('images', file));
+                    try {
+                        const uploadRes = await fetch(`${API_URL}/upload/multiple`, {
+                            method: 'POST',
+                            body: formData
+                        });
+                        const uploadData = await uploadRes.json();
+                        body.portfolio = uploadData.urls;
+                    } catch (uploadError) {
+                        console.error('Portfolio upload error:', uploadError);
+                        alert("Rasmlarni yuklashda xatolik");
+                        return;
+                    }
+                } else {
+                    body.portfolio = [];
+                }
+            }
+
+            try {
+                const response = await fetch(`${AUTH_API_URL}/verify-otp`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(body)
+                });
+                const data = await response.json();
+                console.log('Verify OTP response:', data);
+                if (response.ok) {
+                    localStorage.setItem('ustatop_token', data.token);
+                    localStorage.setItem('ustatop_user', JSON.stringify(data));
+                    localStorage.removeItem('temp_auth_mode');
+                    console.log('Login/Register successful, redirecting...');
+                    window.location.href = "home.html";
+                } else {
+                    console.error('Verify error:', data.message);
+                    alert(data.message || "Kod noto'g'ri");
+                }
+            } catch (error) {
+                console.error('Verify fetch error:', error);
+                alert("Tasdiqlashda xatolik");
+            }
+        }
+
+        // Drag and Drop
+        const dropZone = document.getElementById('dropZone');
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) { e.preventDefault(); e.stopPropagation(); }
+
+        dropZone.addEventListener('drop', handleDrop, false);
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            handleFiles(files);
+        }
+    </script>
+</body>
+</html>

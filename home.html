@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UstaTop - Eng Yaxshi Ustalar</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="js/i18n.js"></script>
+    <script src="js/config.js"></script>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-top">
+                <div class="menu-container">
+                    <!-- 3 line menu button -->
+                    <div class="menu-btn" id="menuBtn">
+                        <i class="fas fa-bars"></i>
+                    </div>
+
+                    <!-- Dropdown Menu -->
+                    <div class="dropdown-menu" id="dropdownMenu">
+                        <a href="home.html" class="menu-item" data-i18n="nav-home">
+                            Bosh sahifa
+                        </a>
+                        <div class="menu-item" id="hududlarBtn" data-i18n="nav-regions">
+                            Hududlar <i class="fas fa-chevron-right"></i>
+                        </div>
+                        <div class="menu-item" id="ustalarBtn" data-i18n="nav-categories">
+                            Ustalar <i class="fas fa-chevron-right"></i>
+                        </div>
+                        <a href="yordam.html" class="menu-item">
+                            Yordam
+                        </a>
+                        <a href="registratsiya.html" class="menu-item" data-i18n="registratsiya">
+                            Usta sifatida ro'yxatdan o'tish
+                        </a>
+                        <a href="login.html" class="menu-item" id="loginMenuLink">
+                            <i class="fas fa-sign-in-alt"></i> Kirish
+                        </a>
+                    </div>
+
+                    <!-- Sub Menu overlay for regions -->
+                    <div class="sub-menu" id="subMenuHudud">
+                        <div class="sub-menu-header" id="backBtnHudud">
+                            <i class="fas fa-arrow-left"></i> Orqaga
+                        </div>
+                        <div class="sub-menu-list">
+                            <div class="list-item" onclick="location.href='hududlar/andijon.html'">Andijon viloyati</div>
+                            <div class="list-item" onclick="location.href='hududlar/buxoro.html'">Buxoro viloyati</div>
+                            <div class="list-item" onclick="location.href='hududlar/fargona.html'">Farg'ona viloyati</div>
+                            <div class="list-item" onclick="location.href='hududlar/jizzax.html'">Jizzax viloyati</div>
+                            <div class="list-item" onclick="location.href='hududlar/xorazm.html'">Xorazm viloyati</div>
+                            <div class="list-item" onclick="location.href='hududlar/namangan.html'">Namangan viloyati</div>
+                            <div class="list-item" onclick="location.href='hududlar/navoiy.html'">Navoiy viloyati</div>
+                            <div class="list-item" onclick="location.href='hududlar/qashqadaryo.html'">Qashqadaryo viloyati</div>
+                            <div class="list-item" onclick="location.href='hududlar/samarqand.html'">Samarqand viloyati</div>
+                            <div class="list-item" onclick="location.href='hududlar/sirdaryo.html'">Sirdaryo viloyati</div>
+                            <div class="list-item" onclick="location.href='hududlar/surxondaryo.html'">Surxondaryo viloyati</div>
+                            <div class="list-item" onclick="location.href='hududlar/toshkent.html'">Toshkent viloyati</div>
+                        </div>
+                    </div>
+
+                    <!-- Sub Menu overlay for categories -->
+                    <div class="sub-menu" id="subMenuUsta">
+                        <div class="sub-menu-header" id="backBtnUsta">
+                            <i class="fas fa-arrow-left"></i> Orqaga
+                        </div>
+                        <div class="sub-menu-list">
+                            <div class="list-item" onclick="location.href='ustalar/santexnik.html'">Santexnik</div>
+                            <div class="list-item" onclick="location.href='ustalar/elektrik.html'">Elektrik</div>
+                            <div class="list-item" onclick="location.href='ustalar/quruvchi.html'">Quruvchi</div>
+                            <div class="list-item" onclick="location.href='ustalar/remont.html'">Remont ustasi</div>
+                            <div class="list-item" onclick="location.href='ustalar/mebel.html'">Mebel ustasi</div>
+                            <div class="list-item" onclick="location.href='ustalar/texnika.html'">Texnika ustasi (telefon, kompyuter, TV va boshqalar)</div>
+                            <div class="list-item" onclick="location.href='ustalar/avto.html'">Avto ustasi</div>
+                            <div class="list-item" onclick="location.href='ustalar/konditsioner.html'">Konditsioner ustasi</div>
+                            <div class="list-item" onclick="location.href='ustalar/payvandchi.html'">Payvandchi</div>
+                            <div class="list-item" onclick="location.href='ustalar/dizayner.html'">Dizayner</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="logo">
+                    <img src="logo.jpg" alt="Logo">
+                </div>
+                <div class="header-text">
+                    <h1 data-i18n="header-main-title">Mukammal xizmat uchun<br><span>eng yaxshi ustalarni tanlang</span></h1>
+                    <p data-i18n="header-subtitle">Sizga mos ustani topish endi yanada oson.</p>
+                </div>
+                <!-- Usta Registration Button (top-right) -->
+                <a href="registratsiya.html" class="usta-register-btn" id="ustaRegisterBtn">
+                    <i class="fas fa-hard-hat"></i>
+                    <span data-i18n="registratsiya">Usta sifatida ro'yxatdan o'tish</span>
+                </a>
+                <!-- Account Avatar (top-right) -->
+                <a href="account.html" id="accountAvatar" style="display:none; width:42px; height:42px; border-radius:50%; background:linear-gradient(135deg,#3b82f6,#1d4ed8); color:#fff; font-size:18px; font-weight:700; font-family:Montserrat,sans-serif; display:none; align-items:center; justify-content:center; text-decoration:none; flex-shrink:0; box-shadow:0 3px 10px rgba(59,130,246,0.45); border:2px solid rgba(255,255,255,0.5); margin-left:auto; position:relative; top:0;">?</a>
+            </div>
+        </div>
+    </header>
+
+    <section class="search-section">
+        <div class="container">
+            <div class="search-wrapper">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="santexnik toping">
+                </div>
+                <!-- Action Buttons next to Search -->
+                <div class="search-actions">
+                    <a href="chat system.html" class="side-btn chat-btn" title="Chat">
+                        <i class="fas fa-comment-dots"></i>
+                    </a>
+                    <a href="sozlamalar.html" class="side-btn settings-btn" title="Sozlamalar">
+                        <i class="fas fa-cog"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ustalar List Section -->
+    <section class="ustalar-section">
+        <div class="container">
+            <h2 class="section-title">Eng yaxshi ustalar</h2>
+            <div class="ustalar-grid" id="ustalarGrid">
+                <!-- Workers will be loaded dynamically -->
+                <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #64748b;">
+                    <i class="fas fa-spinner fa-spin fa-2x"></i>
+                    <p style="margin-top:10px;">Ustalar yuklanmoqda...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Usta Showcase Modal -->
+    <div class="modal-overlay" id="ustaModal">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <button class="modal-close" id="closeModal"><i class="fas fa-times"></i></button>
+            
+            <div class="modal-carousel" id="carouselContainer">
+                <div class="carousel-track" id="modalTrack">
+                    <!-- Images will be injected here -->
+                </div>
+                <button class="modal-nav modal-prev" id="prevSlide"><i class="fas fa-chevron-left"></i></button>
+                <button class="modal-nav modal-next" id="nextSlide"><i class="fas fa-chevron-right"></i></button>
+                <div class="carousel-indicators" id="modalIndicators">
+                    <!-- Dots will be injected here -->
+                </div>
+            </div>
+
+            <div class="modal-body">
+                <h3 class="modal-title" id="modalName">Ism Familiya</h3>
+                <div class="usta-rating" style="justify-content: center;" id="modalRatingContent">
+                    <!-- Rating injected here -->
+                </div>
+                <p class="modal-job" id="modalJob"><i class="fas fa-briefcase"></i> Kasb | <i class="fas fa-map-marker-alt"></i> Manzil</p>
+                
+                <div class="modal-actions">
+                    <button class="action-btn btn-phone" id="phoneBtn" onclick="revealPhone()">
+                        <i class="fas fa-phone-alt"></i> Telefon raqamni ko'rish
+                    </button>
+                    <a href="chat system.html" class="action-btn btn-chat" id="modalChatBtn">
+                        <i class="fas fa-comment-dots"></i> Chat orqali yozish
+                    </a>
+                    <a href="#" class="action-btn btn-telegram" id="tgBtn" target="_blank">
+                        <i class="fab fa-telegram-plane"></i> Telegram orqali yozish
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Fetch and load workers from API
+        async function loadWorkers() {
+            const grid = document.getElementById('ustalarGrid');
+            try {
+                const response = await fetch(`${API_URL}/users/workers`);
+                const workers = await response.json();
+                
+                if (workers.length === 0) {
+                    grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #64748b;">Hozircha xech qanday usta ro\'yxatdan o\'tmagan.</div>';
+                    return;
+                }
+
+                grid.innerHTML = '';
+                workers.forEach(w => {
+                    const portfolio = w.portfolio && w.portfolio.length > 0 
+                        ? w.portfolio.map(url => url.startsWith('http') ? url : `${BACKEND_URL}${url}`)
+                        : ['https://images.unsplash.com/photo-1540569014015-19a7be504e3a?auto=format&fit=crop&w=1000&q=80'];
+                    
+                    const card = document.createElement('div');
+                    card.className = 'usta-card';
+                    card.onclick = () => openModal(w.name, w.category || 'Usta', w.location || 'Oʻzbekiston', '5.0', '0', w.phone, 't.me/ustatop', portfolio, w._id);
+                    
+                    card.innerHTML = `
+                        <div class="usta-img">
+                            <img src="${portfolio[0]}" alt="${w.name}">
+                        </div>
+                        <div class="usta-info">
+                            <h3>${w.name}</h3>
+                            <div class="usta-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <span>5.0 (0)</span>
+                            </div>
+                            <p class="usta-job"><i class="fas fa-briefcase"></i> ${w.category || 'Mutaxassis'}</p>
+                            <p class="usta-location"><i class="fas fa-map-marker-alt"></i> ${w.location || 'Oʻzbekiston'}</p>
+                            <a href="chat system.html?userId=${w._id}" class="card-chat-btn" onclick="event.stopPropagation()" title="Chatga yozish">
+                                <i class="fas fa-comment-dots"></i>
+                            </a>
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                });
+            } catch (error) {
+                console.error("Workers loading error:", error);
+                grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #ef4444;">Yuklashda xatolik yuz berdi.</div>';
+            }
+        }
+
+        // Initialize display
+        (function() {
+            const user = JSON.parse(localStorage.getItem('ustatop_user') || 'null');
+            const avatar = document.getElementById('accountAvatar');
+            const loginLink = document.getElementById('loginMenuLink');
+            const registerBtn = document.getElementById('ustaRegisterBtn');
+            const menuRegisterLink = document.querySelector('.dropdown-menu a[href="registratsiya.html"]');
+
+            if (user) {
+                avatar.textContent = user.name.charAt(0).toUpperCase();
+                avatar.style.display = 'flex';
+                if (loginLink) loginLink.style.display = 'none';
+
+                if (user.role === 'worker') {
+                    if (registerBtn) registerBtn.style.display = 'none';
+                    if (menuRegisterLink) menuRegisterLink.style.display = 'none';
+                }
+            }
+            loadWorkers();
+        })();
+
+        const menuBtn = document.getElementById('menuBtn');
+        const dropdownMenu = document.getElementById('dropdownMenu');
+        
+        const hududlarBtn = document.getElementById('hududlarBtn');
+        const ustalarBtn = document.getElementById('ustalarBtn');
+        
+        const subMenuHudud = document.getElementById('subMenuHudud');
+        const subMenuUsta = document.getElementById('subMenuUsta');
+        
+        const backBtnHudud = document.getElementById('backBtnHudud');
+        const backBtnUsta = document.getElementById('backBtnUsta');
+
+        // Toggle primary menu
+        menuBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (subMenuHudud.classList.contains('active') || subMenuUsta.classList.contains('active')) {
+                subMenuHudud.classList.remove('active');
+                subMenuUsta.classList.remove('active');
+                dropdownMenu.classList.remove('active');
+            } else {
+                dropdownMenu.classList.toggle('active');
+            }
+        });
+
+        // Open Hududlar submenu
+        hududlarBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            dropdownMenu.classList.remove('active');
+            subMenuHudud.classList.add('active');
+        });
+
+        // Open Ustalar submenu
+        ustalarBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            dropdownMenu.classList.remove('active');
+            subMenuUsta.classList.add('active');
+        });
+
+        // Go back from Hududlar
+        backBtnHudud.addEventListener('click', (e) => {
+            e.stopPropagation();
+            subMenuHudud.classList.remove('active');
+            dropdownMenu.classList.add('active');
+        });
+
+        // Go back from Ustalar
+        backBtnUsta.addEventListener('click', (e) => {
+            e.stopPropagation();
+            subMenuUsta.classList.remove('active');
+            dropdownMenu.classList.add('active');
+        });
+
+        // Close all on outside click
+        window.addEventListener('click', (e) => {
+            if(!e.target.closest('.menu-container')) {
+                dropdownMenu.classList.remove('active');
+                subMenuHudud.classList.remove('active');
+                subMenuUsta.classList.remove('active');
+            }
+        });
+        
+        // Auto-fill search box based on selection (only for Ustalar categories)
+        const ustaListItems = document.querySelectorAll('#subMenuUsta .list-item');
+        const searchInput = document.querySelector('.search-box input');
+        ustaListItems.forEach(item => {
+            item.addEventListener('click', () => {
+                searchInput.value = item.textContent;
+                dropdownMenu.classList.remove('active');
+                subMenuHudud.classList.remove('active');
+                subMenuUsta.classList.remove('active');
+            });
+        });
+
+        // --- Workers Modal & Carousel Logic ---
+        const modal = document.getElementById('ustaModal');
+        const closeBtn = document.getElementById('closeModal');
+        const modalTrack = document.getElementById('modalTrack');
+        const modalIndicators = document.getElementById('modalIndicators');
+        const prevSlideBtn = document.getElementById('prevSlide');
+        const nextSlideBtn = document.getElementById('nextSlide');
+        const phoneBtn = document.getElementById('phoneBtn');
+        
+        let currentSlide = 0;
+        let totalSlides = 0;
+        let currentUstaId = '';
+
+        // Open Modal Function
+        window.openModal = function(name, job, location, rating, reviews, phone, tgLink, images, ustaId) {
+            document.getElementById('modalName').textContent = name;
+            document.getElementById('modalJob').innerHTML = `<i class="fas fa-briefcase"></i> ${job} | <i class="fas fa-map-marker-alt"></i> ${location}`;
+            currentUstaId = ustaId;
+            
+            // Update Chat Link in Modal
+            const modalChatBtn = document.getElementById('modalChatBtn');
+            if (modalChatBtn) modalChatBtn.href = `chat system.html?userId=${ustaId}`;
+            
+            // Build rating
+            let ratingHtml = '';
+            const fullStars = Math.floor(parseFloat(rating));
+            const hasHalf = parseFloat(rating) % 1 !== 0;
+            for(let i = 0; i < fullStars; i++) ratingHtml += '<i class="fas fa-star"></i>';
+            if(hasHalf) ratingHtml += '<i class="fas fa-star-half-stroke"></i>';
+            const emptyStars = 5 - fullStars - (hasHalf ? 1 : 0);
+            for(let i = 0; i < emptyStars; i++) ratingHtml += '<i class="far fa-star"></i>';
+            ratingHtml += `<span>${rating} (${reviews})</span>`;
+            document.getElementById('modalRatingContent').innerHTML = ratingHtml;
+
+            // Setup buttons
+            currentPhone = phone;
+            phoneBtn.innerHTML = `<i class="fas fa-phone-alt"></i> Telefon raqamni ko'rish`;
+            phoneBtn.classList.remove('reveal');
+            phoneBtn.href = "#";
+            document.getElementById('tgBtn').href = "https://" + tgLink;
+
+            // Setup Carousel Images
+            modalTrack.innerHTML = '';
+            modalIndicators.innerHTML = '';
+            totalSlides = images.length;
+            currentSlide = 0;
+
+            images.forEach((src, index) => {
+                // Slide
+                const slide = document.createElement('div');
+                slide.className = 'carousel-slide';
+                const img = document.createElement('img');
+                img.src = src;
+                slide.appendChild(img);
+                modalTrack.appendChild(slide);
+
+                // Indicator
+                const dot = document.createElement('div');
+                dot.className = `indicator ${index === 0 ? 'active' : ''}`;
+                dot.onclick = (e) => { e.stopPropagation(); goToSlide(index); };
+                modalIndicators.appendChild(dot);
+            });
+
+            updateCarouselPos();
+
+            // Show modal
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden'; // prevent bg scroll
+        };
+
+        // Phone reveal
+        window.revealPhone = function(e) {
+            if(!phoneBtn.classList.contains('reveal')) {
+                phoneBtn.classList.add('reveal');
+                phoneBtn.innerHTML = `<i class="fas fa-phone-alt"></i> ${currentPhone}`;
+                phoneBtn.href = `tel:${currentPhone}`;
+            }
+        };
+
+        // Close Modal
+        function hideModal() {
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        closeBtn.addEventListener('click', hideModal);
+        modal.addEventListener('click', hideModal);
+
+        // Carousel Navigation
+        function goToSlide(index) {
+            if (index < 0) index = totalSlides - 1;
+            if (index >= totalSlides) index = 0;
+            currentSlide = index;
+            updateCarouselPos();
+        }
+
+        function updateCarouselPos() {
+            modalTrack.style.transform = `translateX(-${currentSlide * 100}%)`;
+            // Update dots
+            Array.from(modalIndicators.children).forEach((dot, idx) => {
+                dot.classList.toggle('active', idx === currentSlide);
+            });
+        }
+
+        prevSlideBtn.addEventListener('click', (e) => { e.stopPropagation(); goToSlide(currentSlide - 1); });
+        nextSlideBtn.addEventListener('click', (e) => { e.stopPropagation(); goToSlide(currentSlide + 1); });
+
+        // Swipe support mapping for Carousel
+        let startX = 0;
+        let isDragging = false;
+
+        modalTrack.addEventListener('touchstart', e => {
+            startX = e.touches[0].clientX;
+            isDragging = true;
+        }, {passive: true});
+
+        modalTrack.addEventListener('touchend', e => {
+            if(!isDragging) return;
+            isDragging = false;
+            const endX = e.changedTouches[0].clientX;
+            const diffX = startX - endX;
+            if(Math.abs(diffX) > 50) {
+                if(diffX > 0) goToSlide(currentSlide + 1);
+                else goToSlide(currentSlide - 1);
+            }
+        });
+
+        // Optional mouse drag
+        modalTrack.addEventListener('mousedown', e => {
+            startX = e.clientX;
+            isDragging = true;
+        });
+
+        window.addEventListener('mouseup', e => {
+            if(!isDragging) return;
+            isDragging = false;
+            const diffX = startX - e.clientX;
+            if(Math.abs(diffX) > 50) {
+                if(diffX > 0) goToSlide(currentSlide + 1);
+                else goToSlide(currentSlide - 1);
+            }
+        });
+
+    </script>
+</body>
+</html>
+

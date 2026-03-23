@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yordam va Biz haqimizda - UstaTop</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .back-nav {
+            margin-bottom: 20px;
+        }
+
+        .back-nav a {
+            color: #4a5568;
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .back-nav a:hover {
+            color: #3b82f6;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header style="background: #fff; padding: 20px 0; border-bottom: 1px solid #e1e8ed;">
+        <div class="container">
+            <div class="back-nav">
+                <a href="home.html"><i class="fas fa-arrow-left"></i> Bosh sahifaga qaytish</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Help / FAQ Section -->
+    <section class="faq-section" id="help">
+        <div class="container">
+            <h2 class="section-title text-center">Savollaringiz bormi?</h2>
+            <div class="accordion-wrapper">
+                
+                <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span>Ustani qanday topsam bo'ladi?</span>
+                        <i class="fas fa-plus"></i>
+                    </button>
+                    <div class="accordion-body">
+                        <p>Qidiruv maydoniga kerakli kasbni yozing yoki menyudan o'zingizga kerakli xizmat turini tanlab, hududingizdagi eng yaxshi ishonchli ustalarni topishingiz mumkin.</p>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span>Qanday qilib buyurtma beraman?</span>
+                        <i class="fas fa-plus"></i>
+                    </button>
+                    <div class="accordion-body">
+                        <p>Ustalar ro'yxatidan ma'qul kelgan ustani tanlang. Uning saifasiga o'tib, ko'rsatilgan telefon raqamiga qo'ng'iroq qilib yoki tarmoqlar orqali bog'lanishingiz mumkin.</p>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span>Xizmat narxlari qanday?</span>
+                        <i class="fas fa-plus"></i>
+                    </button>
+                    <div class="accordion-body">
+                        <p>Narxlar ustanining tajribasi, ishlash turi va qiyinchiligiga bog'liq bo'ladi. Usta bilan to'g'ridan-to'g'ri bog'lanib narxlarni kelishishingiz mumkin.</p>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span>Ustalar ishonchlimi va kafolat bormi?</span>
+                        <i class="fas fa-plus"></i>
+                    </button>
+                    <div class="accordion-body">
+                        <p>Barcha ustalar ro'yxatdan o'tishdan oldin tekshiriladi va ularning avvalgi mijozlari tomonidan qoldirilgan reytinglari va baholari asosida ishonchliligini baholashingiz mumkin.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- About Us Section -->
+    <section class="about-section">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2 class="section-title">UstaTop haqida</h2>
+                    <p class="about-description">
+                        UstaTop is a modern platform that connects users with skilled and trusted workers.<br>
+                        Users can easily find professionals, compare services, and contact them directly.
+                    </p>
+                    <div class="mission-box">
+                        <i class="fas fa-bullseye mission-icon"></i>
+                        <div class="mission-text">
+                            <h3>Bizning maqsadimiz:</h3>
+                            <p>"Sifatli xizmatni ishonchli ustalar bilan bog'lash."</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-image">
+                    <img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Usta ishlash jarayoni">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact-section">
+        <div class="container">
+            <h2 class="section-title text-center">Biz bilan bog'lanish</h2>
+            <div class="contact-wrapper">
+                
+                <div class="contact-info-cards">
+                    <div class="info-card">
+                        <div class="icon-box"><i class="fas fa-map-marker-alt"></i></div>
+                        <h4>Manzil</h4>
+                        <p>Toshkent, O'zbekiston</p>
+                    </div>
+                    <div class="info-card">
+                        <div class="icon-box"><i class="fas fa-phone-alt"></i></div>
+                        <h4>Telefon</h4>
+                        <p>+998 90 123 45 67</p>
+                    </div>
+                    <div class="info-card">
+                        <div class="icon-box"><i class="fas fa-envelope"></i></div>
+                        <h4>Email</h4>
+                        <p>info@ustatop.uz</p>
+                    </div>
+                    <div class="info-card">
+                        <div class="icon-box"><i class="fab fa-telegram-plane"></i></div>
+                        <h4>Telegram</h4>
+                        <p>@ustatop</p>
+                    </div>
+                </div>
+
+                <div class="contact-form-container">
+                    <form class="contact-form" onsubmit="event.preventDefault(); alert('Xabar yuborildi!');">
+                        <div class="form-group">
+                            <label>Ismingiz</label>
+                            <input type="text" placeholder="Ismingizni kiriting" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Xabaringiz</label>
+                            <textarea rows="4" placeholder="Xabaringiz matni..." required></textarea>
+                        </div>
+                        <button type="submit" class="submit-btn">Yuborish <i class="fas fa-paper-plane"></i></button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // FAQ Accordion functionality
+        const accordions = document.querySelectorAll('.accordion-item');
+        accordions.forEach(accordion => {
+            const header = accordion.querySelector('.accordion-header');
+            header.addEventListener('click', () => {
+                // Close currently active accordion (if any)
+                const currentlyActive = document.querySelector('.accordion-item.active');
+                if (currentlyActive && currentlyActive !== accordion) {
+                    currentlyActive.classList.remove('active');
+                }
+                
+                // Toggle clicked accordion
+                accordion.classList.toggle('active');
+            });
+        });
+    </script>
+</body>
+</html>

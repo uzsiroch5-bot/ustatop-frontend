@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UstaTop - Mening akkauntim</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="js/i18n.js"></script>
+    <style>
+        body { background: #f0f4ff; min-height: 100vh; padding: 20px; }
+        .account-page { max-width: 480px; margin: 0 auto; }
+        /* Header bar */
+        .acc-header { display: flex; align-items: center; gap: 14px; margin-bottom: 24px; }
+        .acc-header a { color: #3b82f6; font-size: 20px; text-decoration: none; }
+        .acc-header h2 { font-size: 18px; font-weight: 700; color: #1e3a5f; }
+        /* Profile card */
+        .profile-card { background: linear-gradient(135deg, #3b82f6, #1d4ed8); border-radius: 20px; padding: 30px; text-align: center; color: #fff; margin-bottom: 20px; box-shadow: 0 8px 30px rgba(59,130,246,0.3); }
+        .avatar-circle { width: 90px; height: 90px; border-radius: 50%; background: rgba(255,255,255,0.25); display: flex; align-items: center; justify-content: center; font-size: 38px; margin: 0 auto 14px; border: 3px solid rgba(255,255,255,0.5); font-weight: 700; color: #fff; font-family: 'Montserrat', sans-serif; }
+        .profile-card h2 { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+        .profile-card p { font-size: 14px; opacity: 0.85; }
+        .profile-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.2); border-radius: 20px; padding: 5px 14px; font-size: 12px; font-weight: 600; margin-top: 12px; }
+        /* Menu list */
+        .account-menu { background: #fff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .menu-item-row { display: flex; align-items: center; gap: 14px; padding: 18px 20px; border-bottom: 1px solid #f1f5f9; cursor: pointer; text-decoration: none; color: #1e3a5f; transition: background 0.15s; }
+        .menu-item-row:last-child { border-bottom: none; }
+        .menu-item-row:hover { background: #f8fafc; }
+        .menu-icon { width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+        .icon-blue { background: #eff6ff; color: #3b82f6; }
+        .icon-green { background: #f0fdf4; color: #22c55e; }
+        .icon-orange { background: #fff7ed; color: #f97316; }
+        .icon-red { background: #fef2f2; color: #ef4444; }
+        .menu-item-row span { font-size: 14px; font-weight: 500; flex: 1; }
+        .menu-item-row .chev { color: #cbd5e1; font-size: 13px; }
+        .logout-btn { width: 100%; margin-top: 20px; padding: 15px; border: 2px solid #fee2e2; border-radius: 14px; background: #fff; color: #ef4444; font-family: 'Montserrat', sans-serif; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+        .logout-btn:hover { background: #fef2f2; }
+    </style>
+    <script src="js/config.js"></script>
+</head>
+<body>
+    <div class="account-page">
+        <div class="acc-header">
+            <a href="home.html"><i class="fas fa-arrow-left"></i></a>
+            <h2 data-i18n="my-account">Mening akkauntim</h2>
+        </div>
+
+        <div class="profile-card">
+            <div class="avatar-circle" id="avatarCircle">
+                <img id="avatarImg" src="" alt="" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: none;">
+                <span id="avatarInitial">?</span>
+            </div>
+            <h2 id="profileName">Yuklanmoqda...</h2>
+            <p id="profilePhone">...</p>
+            <div class="profile-badge"><i class="fas fa-user"></i> Mijoz</div>
+        </div>
+
+        <div class="account-menu">
+            <a href="sozlamalar.html" class="menu-item-row">
+                <div class="menu-icon icon-blue"><i class="fas fa-user-edit"></i></div>
+                <span data-i18n="edit-profile">Ma'lumotlarni tahrirlash</span>
+                <i class="fas fa-chevron-right chev"></i>
+            </a>
+            <!-- ADMIN DASHBOARD BUTTON -->
+            <a href="admin.html" class="menu-item-row" id="adminBtn" style="display:none;">
+                <div class="menu-icon" style="background: #fef2f2; color: #dc2626;"><i class="fas fa-shield-alt"></i></div>
+                <span style="color: #dc2626; font-weight: 700;">Admin Panel</span>
+                <i class="fas fa-chevron-right chev"></i>
+            </a>
+            <a href="#" class="menu-item-row">
+                <div class="menu-icon icon-green"><i class="fas fa-history"></i></div>
+                <span>Buyurtmalar tarixi</span>
+                <i class="fas fa-chevron-right chev"></i>
+            </a>
+            <a href="#" class="menu-item-row">
+                <div class="menu-icon icon-orange"><i class="fas fa-heart"></i></div>
+                <span>Sevimli ustalar</span>
+                <i class="fas fa-chevron-right chev"></i>
+            </a>
+            <a href="yordam.html" class="menu-item-row">
+                <div class="menu-icon icon-blue"><i class="fas fa-question-circle"></i></div>
+                <span data-i18n="help">Yordam</span>
+                <i class="fas fa-chevron-right chev"></i>
+            </a>
+        </div>
+
+        <button class="logout-btn" onclick="logout()" data-i18n="logout">
+            <i class="fas fa-sign-out-alt"></i> Chiqish
+        </button>
+    </div>
+
+    <script>
+        const BACKEND_URL = '${BACKEND_URL}';
+        const user = JSON.parse(localStorage.getItem('ustatop_user') || 'null');
+        if (!user) {
+            window.location.href = 'login.html';
+        } else {
+            document.getElementById('profileName').textContent = user.name;
+            document.getElementById('profilePhone').textContent = user.phone;
+            
+            const avatarImg = document.getElementById('avatarImg');
+            const avatarInitial = document.getElementById('avatarInitial');
+            
+            if (user.avatar) {
+                avatarImg.src = user.avatar.startsWith('http') ? user.avatar : `${BACKEND_URL}${user.avatar}`;
+                avatarImg.style.display = 'block';
+                avatarInitial.style.display = 'none';
+            } else {
+                avatarInitial.textContent = user.name.charAt(0).toUpperCase();
+                avatarImg.style.display = 'none';
+                avatarInitial.style.display = 'block';
+            }
+            
+            // Role display logic
+            if (user.role === 'worker') {
+                const badge = document.querySelector('.profile-badge');
+                if (badge) {
+                    const lang = localStorage.getItem('ustatop_lang') || 'uz';
+                    const workerText = translations[lang]['worker-badge'];
+                    badge.innerHTML = `<i class="fas fa-hard-hat"></i> ${workerText}`;
+                }
+            } else if (user.role === 'admin') {
+                const badge = document.querySelector('.profile-badge');
+                if (badge) badge.innerHTML = `<i class="fas fa-shield-alt"></i> Admin`;
+                document.getElementById('adminBtn').style.display = 'flex';
+            }
+        }
+
+        function logout() {
+            if (confirm("Chiqmoqchimisiz?")) {
+                localStorage.removeItem('ustatop_user');
+                window.location.href = 'home.html';
+            }
+        }
+    </script>
+</body>
+</html>

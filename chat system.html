@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UstaTop - Chat Tizimi</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <style>
+        :root {
+            --chat-bg: #f0f2f5;
+            --sidebar-bg: #ffffff;
+            --active-chat: #f0f7ff;
+            --my-message: #3b82f6;
+            --other-message: #ffffff;
+            --text-dark: #1e293b;
+            --text-light: #64748b;
+            --border-color: #e2e8f0;
+        }
+
+        body {
+            height: 100vh;
+            margin: 0;
+            background-color: var(--chat-bg);
+            font-family: 'Montserrat', sans-serif;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .chat-app {
+            width: 100%;
+            height: 100%;
+            max-width: 100%;
+            background: #fff;
+            display: flex;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 380px;
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            background: var(--sidebar-bg);
+            z-index: 10;
+        }
+
+        .sidebar-header {
+            padding: 24px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 13px;
+            margin-bottom: 15px;
+            transition: color 0.3s;
+        }
+
+        .back-link:hover {
+            color: #3b82f6;
+        }
+
+        .sidebar-header h2 {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin: 0 0 16px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .search-container {
+            position: relative;
+        }
+
+        .search-container i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+        }
+
+        .search-container input {
+            width: 100%;
+            padding: 12px 16px 12px 40px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            background: #f8fafc;
+            font-family: inherit;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .search-container input:focus {
+            background: #fff;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
+        }
+
+        .contacts-list {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            padding: 16px 24px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .contact-item:hover {
+            background-color: #f8fafc;
+        }
+
+        .contact-item.active {
+            background-color: var(--active-chat);
+            border-left: 4px solid #3b82f6;
+        }
+
+        .avatar {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            margin-right: 14px;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            background: #10b981;
+            border: 2px solid white;
+            border-radius: 50%;
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+        }
+
+        .contact-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .contact-name-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 4px;
+        }
+
+        .contact-name {
+            font-weight: 600;
+            font-size: 15px;
+            color: var(--text-dark);
+        }
+
+        .contact-time {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        .contact-msg {
+            font-size: 13px;
+            color: var(--text-light);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Main Chat Area */
+        .main-chat {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background-color: #f8fafc;
+            position: relative;
+            min-width: 0;
+        }
+
+        .chat-header {
+            padding: 16px 30px;
+            background: #fff;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .chat-user-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .chat-user-details h3 {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .chat-user-details p {
+            margin: 2px 0 0 0;
+            font-size: 12px;
+            color: #10b981;
+            font-weight: 500;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 15px;
+            color: var(--text-light);
+            font-size: 18px;
+        }
+
+        .messages-area {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            background-image: url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png');
+            background-blend-mode: overlay;
+            background-color: #f1f5f9;
+        }
+
+        .message {
+            max-width: 75%;
+            padding: 12px 18px;
+            border-radius: 18px;
+            font-size: 14px;
+            line-height: 1.5;
+            position: relative;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            word-wrap: break-word;
+            min-width: 80px;
+        }
+
+        .message.incoming {
+            align-self: flex-start;
+            background: var(--other-message);
+            color: var(--text-dark);
+            border-bottom-left-radius: 4px;
+        }
+
+        .message.outgoing {
+            align-self: flex-end;
+            background: var(--my-message);
+            color: #fff;
+            border-bottom-right-radius: 4px;
+        }
+
+        .message.admin-msg {
+            align-self: center;
+            background: #fee2e2;
+            color: #b91c1c;
+            border: 1px solid #fecaca;
+            text-align: center;
+            width: 90%;
+            max-width: 90%;
+            font-weight: 600;
+            margin: 10px 0;
+        }
+
+        .message img, .message video {
+            max-width: 100%;
+            border-radius: 12px;
+            margin-top: 5px;
+            display: block;
+        }
+
+        .message .time {
+            font-size: 10px;
+            margin-top: 5px;
+            display: block;
+            opacity: 0.7;
+            text-align: right;
+        }
+
+        /* Chat Footer */
+        .chat-footer {
+            padding: 20px 30px;
+            background: #fff;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .attach-btn {
+            font-size: 20px;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .attach-btn:hover {
+            color: #3b82f6;
+        }
+
+        .input-box {
+            flex: 1;
+            position: relative;
+        }
+
+        .input-box input {
+            width: 100%;
+            padding: 14px 20px;
+            border-radius: 30px;
+            border: 1px solid var(--border-color);
+            background: #f8fafc;
+            outline: none;
+            font-family: inherit;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .input-box input:focus {
+            background: #fff;
+            border-color: #3b82f6;
+        }
+
+        .send-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--my-message);
+            color: white;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(59,130,246,0.3);
+        }
+
+        .send-btn:hover {
+            transform: scale(1.05);
+            background: #2563eb;
+        }
+
+        /* Mobile specific Toggle */
+        .menu-toggle {
+            display: none;
+            font-size: 20px;
+            margin-right: 15px;
+            cursor: pointer;
+        }
+
+        @media (max-width: 900px) {
+            .sidebar {
+                position: absolute;
+                left: -100%;
+                top: 0;
+                bottom: 0;
+                width: 100%;
+                transition: left 0.3s ease;
+            }
+            .sidebar.active {
+                left: 0;
+            }
+            .menu-toggle {
+                display: block;
+            }
+        }
+    </style>
+    <script src="js/config.js"></script>
+</head>
+<body>
+
+    <div class="chat-app">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href="home.html" class="back-link">
+                    <i class="fas fa-chevron-left"></i> Bosh sahifa
+                </a>
+                <h2><i class="fas fa-comments" style="color:#3b82f6"></i> Suhbatlar</h2>
+                <div class="search-container">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Ism bo'yicha qidirish...">
+                </div>
+            </div>
+            <div class="contacts-list" id="contactsList">
+                <!-- Contacts will be loaded here -->
+            </div>
+        </aside>
+
+        <!-- Main Chat Area -->
+        <main class="main-chat">
+            <header class="chat-header">
+                <div class="chat-user-info">
+                    <div class="menu-toggle" id="menuToggle">
+                        <i class="fas fa-bars"></i>
+                    </div>
+                    <div class="avatar" style="width:40px; height:40px; margin-right:10px;" id="currentAvatar">
+                        <img src="https://images.unsplash.com/photo-1540569014015-19a7be504e3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=60" alt="Current">
+                    </div>
+                    <div class="chat-user-details">
+                        <h3 id="currentName">Kontakt tanlang</h3>
+                        <p id="currentStatus"></p>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <i class="fas fa-phone-alt"></i>
+                    <i class="fas fa-ellipsis-v"></i>
+                </div>
+            </header>
+
+            <div class="messages-area" id="msgArea">
+                <div style="height: 100%; display: flex; align-items: center; justify-content: center; color: #64748b; text-align: center; padding: 20px;">
+                    <div>
+                        <i class="fas fa-comments fa-3x" style="margin-bottom: 15px; color: #cbd5e1;"></i>
+                        <p>Suhbatni boshlash uchun kontaktni tanlang</p>
+                    </div>
+                </div>
+            </div>
+
+            <footer class="chat-footer">
+                <input type="file" id="fileAttach" hidden accept="image/*,video/*">
+                <div class="attach-btn" onclick="document.getElementById('fileAttach').click()">
+                    <i class="fas fa-paperclip"></i>
+                </div>
+                <div class="input-box">
+                    <input type="text" placeholder="Xabar yozing..." id="msgInput">
+                </div>
+                <button class="send-btn" onclick="sendMessage()">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </footer>
+        </main>
+    </div>
+
+    <script>
+        const menuToggle = document.getElementById('menuToggle');
+
+        // Dynamic API URL resolution
+        const getBaseUrl = () => {
+            const { protocol, hostname } = window.location;
+            if (hostname === 'localhost' || hostname === '127.0.0.1') {
+                return `${protocol}//localhost:5000`;
+            }
+            // Fallback to current host if we are served from port 5000 already
+            if (window.location.port === '5000') return window.location.origin;
+            return '${BACKEND_URL}'; // Default
+        };
+
+        const BASE_URL = getBaseUrl();
+        const API_URL = `${BASE_URL}/api`;
+        const socket = io(BASE_URL);
+
+        const msgArea = document.getElementById('msgArea');
+        const msgInput = document.getElementById('msgInput');
+        const sidebar = document.getElementById('sidebar');
+
+        console.log('Chat Initialized. API_URL:', API_URL);
+
+        let currentUser = JSON.parse(localStorage.getItem('ustatop_user') || '{}');
+        let activeReceiverId = null;
+
+        if (!currentUser._id) {
+            console.error('No logged-in user found.');
+            alert('Iltimos, avval tizimga kiring!');
+            window.location.href = 'login.html';
+        }
+
+        if (currentUser._id) {
+            console.log('Logging in as:', currentUser.name, '(' + currentUser._id + ')');
+            socket.emit('join', { userId: currentUser._id });
+            
+            loadContacts().then(() => {
+                const urlParams = new URLSearchParams(window.location.search);
+                const targetUserId = urlParams.get('userId');
+                if (targetUserId) {
+                    console.log('Target user from URL:', targetUserId);
+                    fetch(`${API_URL}/auth/user/${targetUserId}`)
+                        .then(res => res.json())
+                        .then(user => {
+                            if (user && user._id) {
+                                console.log('Auto-selecting user:', user.name);
+                                selectContact(document.createElement('div'), user.name, 'online', user.avatar || '', user._id);
+                            } else {
+                                console.warn('Target user not found in DB.');
+                            }
+                        })
+                        .catch(err => console.error('Auto-select fetch error:', err));
+                }
+            });
+        }
+
+        async function loadContacts() {
+            const list = document.getElementById('contactsList');
+            try {
+                const response = await fetch(`${API_URL}/messages/contacts/${currentUser._id}`);
+                const contacts = await response.json();
+                
+                if (contacts.length === 0) {
+                    list.innerHTML = '<div style="padding: 20px; text-align: center; color: #64748b;">Hozircha xabarlar yo\'q</div>';
+                    return;
+                }
+
+                list.innerHTML = '';
+                contacts.forEach(contact => {
+                    const time = contact.lastTime ? new Date(contact.lastTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '';
+                    const avatar = contact.avatar || 'https://via.placeholder.com/100?text=' + contact.name.charAt(0);
+                    
+                    const item = document.createElement('div');
+                    item.className = 'contact-item';
+                    item.onclick = function() { selectContact(this, contact.name, 'online', avatar, contact._id); };
+                    
+                    item.innerHTML = `
+                        <div class="avatar">
+                            <img src="${avatar}" alt="User">
+                        </div>
+                        <div class="contact-info">
+                            <div class="contact-name-row">
+                                <span class="contact-name">${contact.name}</span>
+                                <span class="contact-time">${time}</span>
+                            </div>
+                            <p class="contact-msg">${contact.lastMessage || ''}</p>
+                        </div>
+                    `;
+                    list.appendChild(item);
+                });
+            } catch (error) {
+                console.error('Load contacts error:', error);
+                list.innerHTML = '<div style="padding: 20px; text-align: center; color: #ef4444;">Yuklashda xatolik</div>';
+            }
+        }
+
+        socket.on('message', (message) => {
+            if (activeReceiverId && (message.sender === activeReceiverId || message.receiver === activeReceiverId)) {
+                appendMessage(message);
+            }
+        });
+
+        // Mobile sidebar toggle
+        menuToggle.onclick = () => {
+            sidebar.classList.toggle('active');
+        };
+
+        // Select contact logic
+        async function selectContact(el, name, status, avatarUrl, receiverId) {
+            // Update UI
+            document.querySelectorAll('.contact-item').forEach(item => item.classList.remove('active'));
+            el.classList.add('active');
+            
+            activeReceiverId = receiverId;
+            document.getElementById('currentName').textContent = name;
+            document.getElementById('currentStatus').textContent = status === 'online' ? 'tarmoqda' : 'yaqinda bo\'lgan';
+            document.getElementById('currentStatus').style.color = status === 'online' ? '#10b981' : '#64748b';
+            document.getElementById('currentAvatar').querySelector('img').src = avatarUrl;
+
+            // Load History
+            msgArea.innerHTML = '<div class="message incoming">Yuklanmoqda...</div>';
+            try {
+                const response = await fetch(`${API_URL}/messages/${currentUser._id}?otherUserId=${receiverId}`);
+                const messages = await response.json();
+                msgArea.innerHTML = '';
+                messages.forEach(appendMessage);
+            } catch (error) {
+                console.error('History error:', error);
+                msgArea.innerHTML = '<div class="message incoming">Xabarlarni yuklab bo\'lmadi.</div>';
+            }
+
+            // Auto close mobile menu
+            sidebar.classList.remove('active');
+        }
+
+        function appendMessage(message) {
+            // Support both populated object and plain ID string
+            const sId = (message.sender && typeof message.sender === 'object') ? message.sender._id : message.sender;
+            const isAdmin = (sId === '000000000000000000000000') || (message.isAdminMessage === true);
+            const isOutgoing = sId === currentUser._id;
+            
+            const msgDiv = document.createElement('div');
+            
+            if (isAdmin) {
+                msgDiv.className = 'message admin-msg';
+            } else {
+                msgDiv.className = `message ${isOutgoing ? 'outgoing' : 'incoming'}`;
+            }
+            
+            const time = new Date(message.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            
+            const senderName = (message.sender && typeof message.sender === 'object') ? message.sender.name : (isAdmin ? 'Admin' : 'Foydalanuvchi');
+
+            msgDiv.innerHTML = `
+                ${isAdmin ? '<b>ADMIN OGOHLANTIRISHI:</b><br>' : ''}
+                ${message.content}
+                <span class="time">${time}</span>
+            `;
+
+            msgArea.appendChild(msgDiv);
+            msgArea.scrollTop = msgArea.scrollHeight;
+        }
+
+        // Send message logic
+        async function sendMessage() {
+            const text = msgInput.value.trim();
+            if (!text || !activeReceiverId) return;
+
+            const messageData = {
+                sender: currentUser._id,
+                receiver: activeReceiverId,
+                content: text
+            };
+
+            // Send via Socket.io
+            socket.emit('sendMessage', messageData);
+            
+            // Also save via REST just in case or for consistency (though socket logic in server.js also creates it)
+            // But server.js socket logic ALREADY creates the Message in DB.
+            // So we just wait for the 'message' event from socket to append it.
+            
+            msgInput.value = '';
+        }
+
+        // Handle File Attachments
+        document.getElementById('fileAttach').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const now = new Date();
+                const timeStr = `${now.getHours()}:${now.getMinutes() < 10 ? '0'+now.getMinutes() : now.getMinutes()}`;
+                
+                const msgDiv = document.createElement('div');
+                msgDiv.className = 'message outgoing';
+                
+                let content = '';
+                if (file.type.startsWith('image/')) {
+                    content = `<img src="${event.target.result}" alt="Photo">`;
+                } else if (file.type.startsWith('video/')) {
+                    content = `<video src="${event.target.result}" controls></video>`;
+                }
+                
+                msgDiv.innerHTML = `
+                    ${content}
+                    <span class="time">${timeStr}</span>
+                `;
+                
+                msgArea.appendChild(msgDiv);
+                msgArea.scrollTop = msgArea.scrollHeight;
+                
+                // Mock reply
+                setTimeout(() => {
+                    const replyDiv = document.createElement('div');
+                    replyDiv.className = 'message incoming';
+                    replyDiv.innerText = file.type.startsWith('image/') ? 'Chiroyli rasm! Rahmat.' : 'Video uchun rahmat, hozir ko\'rib chiqaman.';
+                    const timeSpan = document.createElement('span');
+                    timeSpan.className = 'time';
+                    timeSpan.innerText = timeStr;
+                    replyDiv.appendChild(timeSpan);
+                    msgArea.appendChild(replyDiv);
+                    msgArea.scrollTop = msgArea.scrollHeight;
+                }, 1500);
+            };
+            
+            reader.readAsDataURL(file);
+        });
+
+        // Enter key to send
+        msgInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
+    </script>
+</body>
+</html>

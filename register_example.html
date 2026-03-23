@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UstaTop - Ro'yxatdan o'tish (Sodda)</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 25px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #555;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+        }
+        button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 6px;
+            background-color: #3b82f6;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #2563eb;
+        }
+        .message {
+            margin-top: 15px;
+            text-align: center;
+            padding: 10px;
+            border-radius: 6px;
+            display: none;
+        }
+        .success {
+            background-color: #ecfdf5;
+            color: #065f46;
+            display: block;
+        }
+        .error {
+            background-color: #fef2f2;
+            color: #991b1b;
+            display: block;
+        }
+    </style>
+    <script src="js/config.js"></script>
+</head>
+<body>
+
+<div class="container">
+    <h2>Ro'yxatdan o'tish</h2>
+    <form id="registerForm">
+        <div class="form-group">
+            <label for="name">To'liq ism</label>
+            <input type="text" id="name" name="name" placeholder="Jasur Azizov" required>
+        </div>
+        <div class="form-group">
+            <label for="phone">Telefon raqami</label>
+            <input type="tel" id="phone" name="phone" placeholder="+998901234567" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Parol</label>
+            <input type="password" id="password" name="password" placeholder="••••••••" required>
+        </div>
+        <button type="submit">Ro'yxatdan o'tish</button>
+    </form>
+    <div id="message" class="message"></div>
+</div>
+
+<script>
+    const registerForm = document.getElementById('registerForm');
+    const messageDiv = document.getElementById('message');
+
+    registerForm.addEventListener('submit', async (event) => {
+        // Step 2: Prevent page reload
+        event.preventDefault();
+
+        const name = document.getElementById('name').value;
+        const phone = document.getElementById('phone').value;
+        const password = document.getElementById('password').value;
+
+        const userData = { name, phone, password };
+
+        try {
+            // Step 2: Use fetch() to send POST request
+            const response = await fetch('${API_URL}/auth/register', {
+                method: 'POST',
+                headers: {
+                    // Step 2: Correct headers
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(userData)
+            });
+
+            // Step 3: console.log(response)
+            console.log('Server response:', response);
+
+            const data = await response.json();
+            console.log('Response data:', data);
+
+            if (response.ok) {
+                // Step 2: Show success message
+                messageDiv.textContent = 'Muvaffaqiyatli ro\'yxatdan o\'tdingiz!';
+                messageDiv.className = 'message success';
+                registerForm.reset();
+            } else {
+                // Step 2: Show error message
+                messageDiv.textContent = data.message || 'Xatolik yuz berdi.';
+                messageDiv.className = 'message error';
+            }
+        } catch (error) {
+            console.error('Fetch error:', error);
+            messageDiv.textContent = 'Serverga ulanib bo\'lmadi.';
+            messageDiv.className = 'message error';
+        }
+    });
+</script>
+
+</body>
+</html>
